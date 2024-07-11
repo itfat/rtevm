@@ -1,0 +1,29 @@
+# Binaries for programs and tests
+*.exe
+*.exe~
+*.dll
+*.dylib
+*.so
+
+# Test output
+*.log
+
+# Rust/Cargo-specific files
+/target/
+**/*.rs.bk
+
+# Ignore editor files
+# JetBrains
+.idea/
+*.iml
+# VS Code
+.vscode/
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
