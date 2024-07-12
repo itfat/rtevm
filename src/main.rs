@@ -7,6 +7,10 @@ use memory::Memory;
 mod storage;
 use storage::Storage;
 
+mod evm;
+use evm::EVM;
+use ethereum_types::H160;
+
 fn main() {
     println!("--------Stack--------");
     let mut stack = Stack::new();
@@ -39,4 +43,7 @@ fn main() {
     println!("{:#?}", storage.load(1));
     println!("{:#?}", storage.load(2));
     println!("{:#?}", storage.load(3));
+
+    println!("--------EVM--------");
+    let mut evm = EVM::new(H160::from_low_u64_be(0), 100000, 0, vec![1, 2, 3, 4], vec![1, 2, 3, 4]);
 }
