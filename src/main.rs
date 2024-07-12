@@ -4,6 +4,9 @@ use stack::Stack;
 mod memory;
 use memory::Memory;
 
+mod storage;
+use storage::Storage;
+
 fn main() {
     println!("--------Stack--------");
     let mut stack = Stack::new();
@@ -27,4 +30,13 @@ fn main() {
     println!("{}", cost.unwrap());
     println!("{:#?}", mem.data());
     println!("{:#?}", mem.access(0, 20).unwrap());
+
+    println!("--------Storage--------");
+    let mut storage = Storage::new();
+    storage.store(1, &[1, 2, 3, 4]);
+    storage.store(2, &[5, 6, 7, 8]);
+    storage.store(3, "Hello Ethereum".as_bytes());
+    println!("{:#?}", storage.load(1));
+    println!("{:#?}", storage.load(2));
+    println!("{:#?}", storage.load(3));
 }

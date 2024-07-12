@@ -31,7 +31,7 @@ impl Memory {
         self.access(offset, 32)
     }
 
-    pub fn store(&mut self, offset: usize, value: &[u8]) -> Result<(usize), MemoryError> {
+    pub fn store(&mut self, offset: usize, value: &[u8]) -> Result<usize, MemoryError> {
         let expansion_cost;
         if self.data.capacity() <= offset + value.len() {
             let mut expansion_size = 0;
