@@ -1,7 +1,11 @@
 mod stack;
 use stack::Stack;
 
+mod memory;
+use memory::Memory;
+
 fn main() {
+    println!("--------Stack--------");
     let mut stack = Stack::new();
     stack.push(1);
     stack.push(2);
@@ -14,4 +18,13 @@ fn main() {
     println!("{}", stack.peek());
     println!("{:#?}", stack.data());
 
+    println!("--------Memory--------");
+    let mut mem = Memory::new();
+    mem.store(0, &[1, 2, 3, 4]);
+    mem.store(5, &[5, 6, 7, 8, 9, 10]);
+    println!("{:#?}", mem.load(0).unwrap());
+    let cost = mem.store(15, &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]);
+    println!("{}", cost.unwrap());
+    println!("{:#?}", mem.data());
+    println!("{:#?}", mem.access(0, 20).unwrap());
 }
