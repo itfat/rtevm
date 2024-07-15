@@ -162,3 +162,37 @@ pub fn iszero(evm: &mut EVM) {
     evm.pc += 1;
     evm.gas_decreased(3);
 }
+
+pub fn and(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b & a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn or(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b | a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn xor(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b ^ a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn not(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    evm.stack.push(!a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
