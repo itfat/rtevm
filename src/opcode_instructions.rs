@@ -109,3 +109,56 @@ pub fn extend_sign(num: U256, b: U256) -> U256 {
     };
     sign_extended_value
 }
+
+
+pub fn lt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push((b < a) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}    
+
+
+pub fn gt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push((b > a) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn slt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push((b < a) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn sgt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push((b > a) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn eq(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push((b == a) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn iszero(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    evm.stack.push((a == 0) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}

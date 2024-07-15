@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Stack {
     data: Vec<u8>,
 }

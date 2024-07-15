@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub struct Storage {
     data: HashMap<i32, Vec<u8>>,
     cache: Vec<i32>,

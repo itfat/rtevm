@@ -3,6 +3,7 @@ use crate::Storage;
 use crate::Memory;
 use crate::Stack;
 
+#[derive(Debug)]
 pub struct EVM {
     pc: usize,
     stack: Stack,

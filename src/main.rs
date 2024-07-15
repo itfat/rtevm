@@ -46,4 +46,5 @@ fn main() {
 
     println!("--------EVM--------");
     let mut evm = EVM::new(H160::from_low_u64_be(0), 100000, 0, vec![1, 2, 3, 4], vec![1, 2, 3, 4]);
+    println!("{:#?}", evm);
 }

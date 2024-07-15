@@ -6,7 +6,7 @@ pub enum MemoryError {
     ErrOutOfBounds
 }
 
-
+#[derive(Debug)]
 pub struct Memory {
     data: Vec<u8>,
 }
