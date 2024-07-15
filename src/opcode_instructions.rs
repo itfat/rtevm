@@ -196,3 +196,39 @@ pub fn not(evm: &mut EVM) {
     evm.pc += 1;
     evm.gas_decreased(3);
 }
+
+
+pub fn byte(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b >> (8 * a));
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn shl(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b << a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn shr(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b >> a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+
+pub fn sar(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push((b as i32 >> a) as usize);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
