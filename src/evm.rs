@@ -41,4 +41,11 @@ impl EVM {
             logs: Vec::new(),
         }
     }
+
+    pub fn gas_decrease(&mut self, gas: usize) {
+        if self.gas < gas {
+            panic!("Not enough gas");
+        }
+        self.gas -= gas;
+    }
 }
