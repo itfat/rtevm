@@ -37,7 +37,7 @@ pub enum Opcode {
     SAR = 0x1D,
 
     // Hash
-    SHA3 = 0x20,
+    KECCAK256 = 0x20,
 
     // Ethereum State
     ADDRESS = 0x30,
