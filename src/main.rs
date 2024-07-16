@@ -27,23 +27,18 @@ fn main() {
     println!("--------Memory--------");
     let mut mem = Memory::new();
     mem.store(0, &[1, 2, 3, 4]);
-    mem.store(5, &[5, 6, 7, 8, 9, 10]);
-    println!("{:#?}", mem.load(0).unwrap());
-    let cost = mem.store(15, &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]);
-    println!("{}", cost.unwrap());
-    println!("{:#?}", mem.data());
-    println!("{:#?}", mem.access(0, 20).unwrap());
+    println!("{:#?}", mem.load(0));
 
-    println!("--------Storage--------");
-    let mut storage = Storage::new();
-    storage.store(1, &[1, 2, 3, 4]);
-    storage.store(2, &[5, 6, 7, 8]);
-    storage.store(3, "Hello Ethereum".as_bytes());
-    println!("{:#?}", storage.load(1));
-    println!("{:#?}", storage.load(2));
-    println!("{:#?}", storage.load(3));
+    // println!("--------Storage--------");
+    // let mut storage = Storage::new();
+    // storage.store(1, &[1, 2, 3, 4]);
+    // storage.store(2, &[5, 6, 7, 8]);
+    // storage.store(3, "Hello Ethereum".as_bytes());
+    // println!("{:#?}", storage.load(1));
+    // println!("{:#?}", storage.load(2));
+    // println!("{:#?}", storage.load(3));
 
-    println!("--------EVM--------");
-    let mut evm = EVM::new(H160::from_low_u64_be(0), 100000, 0, vec![1, 2, 3, 4], vec![1, 2, 3, 4]);
-    println!("{:#?}", evm);
+    // println!("--------EVM--------");
+    // let mut evm = EVM::new(H160::from_low_u64_be(0), 100000, 0, vec![1, 2, 3, 4], vec![1, 2, 3, 4]);
+    // println!("{:#?}", evm);
 }

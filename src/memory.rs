@@ -8,7 +8,7 @@ pub enum MemoryError {
 
 #[derive(Debug)]
 pub struct Memory {
-    data: Vec<u8>,
+    data: Vec<u8>, // 1 byte = 8 bits
 }
 
 impl Memory {
@@ -18,8 +18,8 @@ impl Memory {
 
     pub fn access(&mut self, offset: usize, size: usize) -> Result<&[u8], MemoryError> {
         if self.len() < offset + size {
-            let mut n_mem = vec![0u8; offset + size];
-            n_mem[..self.data.len()].copy_from_slice(&self.data);
+            let mut n_mem = vec![0x00; offset + size];
+            n_mem[..self.len()].copy_from_slice(&self.data);
             self.data = n_mem;
             return Ok(&self.data[offset..offset + size]);
         }
@@ -33,17 +33,17 @@ impl Memory {
 
     pub fn store(&mut self, offset: usize, value: &[u8]) -> Result<usize, MemoryError> {
         let expansion_cost;
-        if self.data.capacity() <= offset + value.len() {
+        if self.len() <= offset + value.len() {
             let mut expansion_size = 0;
 
             if self.len() == 0 {
                 expansion_size = 32;
-                self.data = vec![0; 32];
+                self.data = vec![0x00; 32]; //initialize memory with 32 zeros if it is empty
             }
 
-            if self.data.capacity() <= offset + value.len() {
-                expansion_size = offset + value.len();
-                let mut n_mem = vec![0u8; expansion_size];
+            if self.len() < offset + value.len() { // extend more memory if needed
+                expansion_size = offset + value.len() - self.len();
+                let mut n_mem = vec![0x00; expansion_size];
                 n_mem[..self.data.len()].copy_from_slice(&self.data);
                 self.data = n_mem;
                 expansion_cost = (expansion_size.pow(2) as f64).sqrt() as usize;
