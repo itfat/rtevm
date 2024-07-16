@@ -9,21 +9,20 @@ use storage::Storage;
 
 mod evm;
 use evm::EVM;
-use ethereum_types::H160;
+use  ethereum_types::{U256, H160};
 
 fn main() {
     println!("--------Stack--------");
     let mut stack = Stack::new();
-    stack.push(1);
-    stack.push(2);
-    stack.push(3);
+    stack.push(U256::from(1));
+    stack.push(U256::from(2));
+    stack.push(U256::from(3));
+    stack.push(U256::from(4));
     println!("{}", stack.to_string());
     println!("{}", stack.pop());
     println!("{}", stack.pop());
-    stack.push(4);
-    stack.push(5);
-    println!("{}", stack.peek());
-    println!("{:#?}", stack.data());
+
+    println!("{}", stack.to_string());
 
     println!("--------Memory--------");
     let mut mem = Memory::new();
