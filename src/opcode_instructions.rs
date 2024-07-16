@@ -232,3 +232,13 @@ pub fn sar(evm: &mut EVM) {
     evm.pc += 1;
     evm.gas_decreased(3);
 }
+
+
+pub fn keccack256(evm: &mut EVM) {
+   offset = evm.stack.pop();
+   size = evm.stack.pop();
+   let data = evm.memory.access(offset, size).unwrap();
+   evm.stack.push(keccak256(data));
+   evm.pc += 1;
+   evm.gas_decreased(30);
+}
