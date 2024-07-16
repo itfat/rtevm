@@ -242,3 +242,23 @@ pub fn keccack256(evm: &mut EVM) {
    evm.pc += 1;
    evm.gas_decreased(30);
 }
+
+
+// duplicate top stack item
+pub fn _dup(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    evm.stack.push(a);
+    evm.stack.push(a);
+    evm.pc += 1;
+    evm.gas_decreased(3);
+}
+
+// swap top of stack with another item given by n
+pub fn swap(evm: &mut EVM, n: u8) {
+    if evm.stack.len() > n+1 as usize {
+        self.stack.swap(0 as usize, n+1 as usize);
+    }
+
+    self.pc += 1;
+    self.gas_decreased(3);
+}
