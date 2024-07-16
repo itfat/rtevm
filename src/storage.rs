@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Storage {
-    data: HashMap<i32, Vec<u8>>,
+    data: HashMap<i32, Vec<u32>>, //value can be up to 32 bytes
     cache: Vec<i32>,
 }
 
@@ -15,8 +15,8 @@ impl Storage {
         }
     }
 
-    pub fn load(&mut self, key: i32) -> (bool, Vec<u8>) {
-        let warm_access = self.data.contains_key(&key);
+    pub fn load(&mut self, key: i32) -> (bool, Vec<u32>) {
+        let warm_access = self.cache.contains(&key); // warm slot means it was accessed before and key's in cache
         if !warm_access {
             self.cache.push(key);
         }
@@ -27,7 +27,7 @@ impl Storage {
         
     }
 
-    pub fn store(&mut self, key: i32, value: &[u8]) {
+    pub fn store(&mut self, key: i32, value: &[u32]) {
         self.data.insert(key, value.to_vec());
     }
 }

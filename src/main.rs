@@ -29,14 +29,12 @@ fn main() {
     mem.store(0, &[1, 2, 3, 4]);
     println!("{:#?}", mem.load(0));
 
-    // println!("--------Storage--------");
-    // let mut storage = Storage::new();
-    // storage.store(1, &[1, 2, 3, 4]);
-    // storage.store(2, &[5, 6, 7, 8]);
-    // storage.store(3, "Hello Ethereum".as_bytes());
-    // println!("{:#?}", storage.load(1));
-    // println!("{:#?}", storage.load(2));
-    // println!("{:#?}", storage.load(3));
+    println!("--------Storage--------");
+    let mut storage = Storage::new();
+    storage.store(1, &[410]);
+    println!("{:#?}", storage.load(1)); // cold access
+    println!("{:#?}", storage.load(1)); //warm access
+    
 
     // println!("--------EVM--------");
     // let mut evm = EVM::new(H160::from_low_u64_be(0), 100000, 0, vec![1, 2, 3, 4], vec![1, 2, 3, 4]);
