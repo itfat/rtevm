@@ -262,3 +262,41 @@ pub fn swap(evm: &mut EVM, n: u8) {
     self.pc += 1;
     self.gas_decreased(3);
 }
+
+
+pub fn address(evm: &mut EVM) {
+    evm.stack.push(evm.sender);
+    evm.pc += 1;
+    evm.gas_decreased(2);
+}
+
+pub fn jump(evm: &mut EVM) {
+    let counter = evm.stack.pop();
+    if evm.program[counter] != JUMPDEST {
+        panic!("Invalid jump instruction");
+    }
+    evm.pc = counter;
+    evm.gas_decreased(8);
+}
+
+pub fn jumpi(evm: &mut EVM) {
+    let counter = evm.stack.pop();
+    let cond = evm.stack.pop();
+    if evm.program[counter] != JUMPDEST || cond == 0 {
+        evm.pc += 1;
+    } else {
+        evm.pc = counter;
+    }
+    evm.gas_decreased(10);
+}
+
+pub fn pc(evm: &mut EVM) {
+    evm.stack.push(evm.pc);
+    evm.pc += 1;
+    evm.gas_decreased(2);
+}
+
+pub fn jump_dest(evm: &mut EVM) {
+    evm.pc += 1;
+    evm.gas_decreased(1);
+}

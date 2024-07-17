@@ -49,4 +49,19 @@ impl EVM {
         }
         self.gas -= gas;
     }
+
+    pub fn peek(&mut self) -> u8 {
+        self.program[self.pc]
+    }
+
+    pub fn step_next(&mut self) {
+        match (
+            self.pc < self.program.len(),
+            self.stop_flag,
+            self.reverse_flag
+        ) {
+            (true, false, false) => true,
+            _ => false,
+        };
+    }
 }
