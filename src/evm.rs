@@ -3,6 +3,8 @@ use crate::Storage;
 use crate::Memory;
 use crate::Stack;
 
+mod opcode_instructions;
+
 #[derive(Debug)]
 pub struct EVM {
     pc: usize,
@@ -55,13 +57,41 @@ impl EVM {
     }
 
     pub fn step_next(&mut self) {
-        match (
-            self.pc < self.program.len(),
-            self.stop_flag,
-            self.reverse_flag
-        ) {
-            (true, false, false) => true,
-            _ => false,
-        };
+        if self.pc < self.program.len() {
+            self.pc += 1;
+        } else {
+            self.stop_flag = true;
+        }
+    }
+
+
+    pub fn run(&mut self) {
+
+        while !self.stop_flag {
+            self.step_next();
+            let op = self.program[self.pc];
+            match op {
+                STOP => opcode_instructions::stop(self),
+                ADD => opcode_instructions::add(self),
+                _ => {
+                    panic!("Unknown opcode: {}", op);
+                    self.stop_flag = true;
+                }
+            };
+        }
+    }
+
+    pub fn reset(&mut self) {
+        self.pc = 0;
+        self.stack = Stack::new();
+        self.memory = Memory::new();
+        self.storage = Storage::new();
+        self.gas = self.gas;
+        self.value = self.value;
+        self.call_data = Vec::new();
+        self.stop_flag = false;
+        self.reverse_flag = false;
+        self.return_data = Vec::new();
+        self.logs = Vec::new();
     }
 }
