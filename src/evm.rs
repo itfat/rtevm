@@ -2,6 +2,7 @@ use ethereum_types::H160;
 use crate::Storage;
 use crate::Memory;
 use crate::Stack;
+use crate::opcodes::Opcode;
 
 mod opcode_instructions;
 
@@ -68,16 +69,18 @@ impl EVM {
     pub fn run(&mut self) {
 
         while !self.stop_flag {
-            self.step_next();
-            let op = self.program[self.pc];
-            match op {
-                STOP => opcode_instructions::stop(self),
-                ADD => opcode_instructions::add(self),
+            let op_u8 = self.program[self.pc];
+            println!("{:#?}: {:#?}", self.pc, op_u8);
+            match Opcode::from_u8(op_u8) {
+                Opcode::STOP => opcode_instructions::stop(self),
+                Opcode::ADD => opcode_instructions::add(self),
+                Opcode::PUSH1 => opcode_instructions::pushN(self),
                 _ => {
-                    panic!("Unknown opcode: {}", op);
-                    self.stop_flag = true;
+                    // panic!("Unknown opcode: {:#?}", op_u8);
+                    // self.stop_flag = true;
                 }
             };
+            self.step_next();
         }
     }
 

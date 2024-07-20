@@ -177,3 +177,31 @@ pub enum Opcode {
     INVALID = 0xFE,
     SELFDESTRUCT = 0xFF,
 }
+
+impl Opcode {
+    pub fn from_u8(value: u8) -> Opcode {
+        match value {
+            0x00 => Opcode::STOP,
+            0x01 => Opcode::ADD,
+            0x02 => Opcode::MUL,
+            0x03 => Opcode::SUB,
+            0x04 => Opcode::DIV,
+            0x05 => Opcode::SDIV,
+            0x06 => Opcode::MOD,
+            0x07 => Opcode::SMOD,
+            0x08 => Opcode::ADDMOD,
+            0x09 => Opcode::MULMOD,
+            0x0A => Opcode::EXP,
+            0x0B => Opcode::SIGNEXTEND,
+            0x10 => Opcode::LT,
+            0x11 => Opcode::GT,
+            0x12 => Opcode::SLT,
+            0x13 => Opcode::SGT,
+            0x14 => Opcode::EQ,
+            0x15 => Opcode::ISZERO,
+            0x60 => Opcode::PUSH1,
+
+            _ => Opcode::INVALID // temporarily
+        }
+    }
+}

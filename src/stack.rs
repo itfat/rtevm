@@ -17,6 +17,7 @@ impl Stack {
             panic!("{}", ERR_STACK_OVERFLOW);
         }
         self.data.push(value);
+        println!("Stack: {}", self.to_string());
     }
 
     pub fn pop(&mut self) -> U256 {

@@ -40,9 +40,9 @@ fn main() {
     
 
     println!("--------EVM--------");
-    let program = vec![0x01, 13, 14];
+    let program = vec![0x60, 0x0d, 0x60, 0x0e, 0x01];
 
-    let call_data = vec![14, 13];
+    let call_data = vec![];
     let sender = H160::zero();  
     let gas = 1000;  
     let value = 0;   

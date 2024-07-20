@@ -1,5 +1,7 @@
 use crate::evm::EVM;
 
+use ethereum_types::U256;
+
 
 pub fn stop(evm: &mut EVM) {
     evm.stop_flag = true;
@@ -7,9 +9,19 @@ pub fn stop(evm: &mut EVM) {
 
 
 pub fn add(evm: &mut EVM) {
-    let a = evm.stack.pop().expect("stack underflow");
-    let b = evm.stack.pop().expect("stack underflow");
+    println!("Adding");
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    println!("a: {}, b: {}", a, b);
     evm.stack.push(a + b);
+    evm.pc += 1;
+    evm.gas_decrease(3);
+}
+
+pub fn pushN(evm: &mut EVM) {
+    let value = evm.program[evm.pc + 1];
+    evm.stack.push(U256::from(value));
+    println!("Pushed value: {}", value);
     evm.pc += 1;
     evm.gas_decrease(3);
 }
