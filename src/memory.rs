@@ -1,4 +1,5 @@
 use thiserror::Error;
+use ethereum_types::U256;
 
 #[derive(Error, Debug)]
 pub enum MemoryError {
@@ -8,7 +9,7 @@ pub enum MemoryError {
 
 #[derive(Debug)]
 pub struct Memory {
-    data: Vec<u8>, // 1 byte = 8 bits
+    data: Vec<U256>, // 32 bytes
 }
 
 impl Memory {
@@ -16,9 +17,9 @@ impl Memory {
         Memory { data: Vec::new() }
     }
 
-    pub fn access(&mut self, offset: usize, size: usize) -> Result<&[u8], MemoryError> {
+    pub fn access(&mut self, offset: usize, size: usize) -> Result<&[U256], MemoryError> {
         if self.len() < offset + size {
-            let mut n_mem = vec![0x00; offset + size];
+            let mut n_mem = vec![U256::zero(); offset + size];
             n_mem[..self.len()].copy_from_slice(&self.data);
             self.data = n_mem;
             return Ok(&self.data[offset..offset + size]);
@@ -27,24 +28,24 @@ impl Memory {
         Ok(&self.data[offset..offset + size])
     }
 
-    pub fn load(&mut self, offset: usize) -> Result<&[u8], MemoryError> {
-        self.access(offset, 32)
+    pub fn load(&mut self, offset: usize) -> Result<&[U256], MemoryError> {
+        self.access(offset, 1)
     }
 
-    pub fn store(&mut self, offset: usize, value: &[u8]) -> Result<usize, MemoryError> {
+    pub fn store(&mut self, offset: usize, value: &[U256]) -> Result<usize, MemoryError> {
         let expansion_cost;
         if self.len() <= offset + value.len() {
             let mut expansion_size = 0;
 
             if self.len() == 0 {
                 expansion_size = 32;
-                self.data = vec![0x00; 32]; //initialize memory with 32 zeros if it is empty
+                self.data = vec![U256::zero(); 32]; //initialize memory with 32 zeros if it is empty
             }
 
             if self.len() < offset + value.len() { // extend more memory if needed
                 expansion_size = offset + value.len() - self.len();
-                let mut n_mem = vec![0x00; expansion_size];
-                n_mem[..self.data.len()].copy_from_slice(&self.data);
+                let mut n_mem = vec![U256::zero(); expansion_size];
+                n_mem[..self.len()].copy_from_slice(&self.data);
                 self.data = n_mem;
                 expansion_cost = (expansion_size.pow(2) as f64).sqrt() as usize;
             } else {
@@ -57,7 +58,7 @@ impl Memory {
         Ok(expansion_cost)
     }
 
-    pub fn data(&self) -> &[u8] {
+    pub fn data(&self) -> &[U256] {
         &self.data
     }
 
