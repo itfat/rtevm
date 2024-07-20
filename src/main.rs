@@ -27,16 +27,16 @@ fn main() {
 
     // println!("{}", stack.to_string());
 
-    println!("--------Memory--------");
-    let mut mem = Memory::new();
-    mem.store(0, &[U256::from(1), U256::from(2), U256::from(3)]);
-    println!("{:#?}", mem.load(0));
+    // println!("--------Memory--------");
+    // let mut mem = Memory::new();
+    // mem.store(0, &[U256::from(1), U256::from(2), U256::from(3)]);
+    // println!("{:#?}", mem.load(0));
 
-    // println!("--------Storage--------");
-    // let mut storage = Storage::new();
-    // storage.store(1, &[410]);
-    // println!("{:#?}", storage.load(1)); // cold access
-    // println!("{:#?}", storage.load(1)); //warm access
+    println!("--------Storage--------");
+    let mut storage = Storage::new();
+    storage.store(1, &[U256::from(410)]);
+    println!("{:#?}", storage.load(1)); // cold access
+    println!("{:#?}", storage.load(1)); //warm access
     
 
     // println!("--------EVM--------");
