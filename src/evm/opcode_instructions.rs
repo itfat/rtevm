@@ -1,5 +1,5 @@
 use crate::evm::EVM;
-
+use crate::memory::MemoryError;
 use ethereum_types::U256;
 
 
@@ -9,10 +9,8 @@ pub fn stop(evm: &mut EVM) {
 
 
 pub fn add(evm: &mut EVM) {
-    println!("Adding");
     let a = evm.stack.pop();
     let b = evm.stack.pop();
-    println!("a: {}, b: {}", a, b);
     evm.stack.push(a + b);
     evm.pc += 1;
     evm.gas_decrease(3);
@@ -21,9 +19,64 @@ pub fn add(evm: &mut EVM) {
 pub fn pushN(evm: &mut EVM) {
     let value = evm.program[evm.pc + 1];
     evm.stack.push(U256::from(value));
-    println!("Pushed value: {}", value);
     evm.pc += 1;
     evm.gas_decrease(3);
+}
+pub fn mstore(evm: &mut EVM) {
+    let value = evm.stack.pop();
+    let address = evm.stack.pop();
+    
+    // Convert U256 to u64. Ensure that the value fits into u64.
+    // This might require additional validation if the address is guaranteed to fit.
+    let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
+
+    // Ensure you have defined `store` to handle `u32_value`
+    evm.storage.store(address_as_u64 as i32, &[value]);
+
+    evm.pc += 1;
+    evm.gas_decrease(3);
+}
+
+fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
+    data.chunks(4)
+        .map(|chunk| {
+            let mut array = [0u8; 4];
+            array.copy_from_slice(chunk);
+            u32::from_be_bytes(array)
+        })
+        .collect()
+}
+
+pub fn mload(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let result = evm.memory.load(address.as_usize());
+    match extract_u256(result) {
+        Some(value) => evm.stack.push(value),
+        None => {
+            // Handle the error case as needed
+            panic!("Failed to load value from memory");
+        }
+    }
+    evm.pc += 1;
+    evm.gas_decrease(3);
+}
+
+pub fn extract_u256(result: Result<&[U256], MemoryError>) -> Option<U256> {
+    match result {
+        Ok(slice) => {
+            // Handle cases where the slice may be empty or has fewer elements than expected
+            if let Some(&value) = slice.get(0) {
+                Some(value)
+            } else {
+                // Handle the case where the slice is empty
+                None
+            }
+        }
+        Err(_) => {
+            // Handle the MemoryError case (e.g., log it or return a default value)
+            None
+        }
+    }
 }
 
 // pub fn mul(evm: &mut EVM) {

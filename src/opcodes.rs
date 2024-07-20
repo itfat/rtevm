@@ -199,7 +199,10 @@ impl Opcode {
             0x13 => Opcode::SGT,
             0x14 => Opcode::EQ,
             0x15 => Opcode::ISZERO,
+            0x51 => Opcode::MSTORE,
+            0x52 => Opcode::MLOAD,
             0x60 => Opcode::PUSH1,
+    
 
             _ => Opcode::INVALID // temporarily
         }
