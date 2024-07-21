@@ -41,17 +41,6 @@ pub fn mstore8(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 
-
-fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
-    data.chunks(4)
-        .map(|chunk| {
-            let mut array = [0u8; 4];
-            array.copy_from_slice(chunk);
-            u32::from_be_bytes(array)
-        })
-        .collect()
-}
-
 pub fn mload(evm: &mut EVM) {
     let address = evm.stack.pop();
     let result = evm.memory.load(address.as_usize());
@@ -105,6 +94,16 @@ fn extract_u256(result: Result<&[U256], MemoryError>) -> Option<U256> {
             None
         }
     }
+}
+
+fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
+    data.chunks(4)
+        .map(|chunk| {
+            let mut array = [0u8; 4];
+            array.copy_from_slice(chunk);
+            u32::from_be_bytes(array)
+        })
+        .collect()
 }
 
 // pub fn mul(evm: &mut EVM) {
