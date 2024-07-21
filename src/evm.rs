@@ -77,6 +77,9 @@ impl EVM {
                 Opcode::PUSH1 => opcode_instructions::pushN(self),
                 Opcode::MSTORE => opcode_instructions::mstore(self),
                 Opcode::MLOAD => opcode_instructions::mload(self),
+                Opcode::MSTORE8 => opcode_instructions::mstore8(self),
+                Opcode::SLOAD => opcode_instructions::sload(self),
+                Opcode::SSTORE => opcode_instructions::sstore(self),
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;

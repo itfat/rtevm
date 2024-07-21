@@ -65,6 +65,29 @@ pub fn mload(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 
+pub fn sstore(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let value = evm.stack.pop();
+    let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
+    evm.storage.store(address_as_u64 as i32, &[value]);
+    evm.gas_decrease(20);
+}
+
+pub fn sload(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let address_as_u64 = address.low_u64(); // Get the lower 64 bits
+    let (warm_access, result) = evm.storage.load(address_as_u64 as i32);
+
+    let value = if let Some(&val) = result.get(0) {
+        val
+    } else {
+        U256::zero()
+    };
+
+    evm.stack.push(value);
+    let gas_cost = if warm_access { 100 } else { 2100 };
+    evm.gas_decrease(gas_cost);
+}
 
 fn extract_u256(result: Result<&[U256], MemoryError>) -> Option<U256> {
     match result {

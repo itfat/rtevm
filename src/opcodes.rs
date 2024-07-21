@@ -201,6 +201,9 @@ impl Opcode {
             0x15 => Opcode::ISZERO,
             0x51 => Opcode::MLOAD,
             0x52 => Opcode::MSTORE,
+            0x53 => Opcode::MSTORE8,
+            0x54 => Opcode::SLOAD,
+            0x55 => Opcode::SSTORE,
             0x60 => Opcode::PUSH1,
     
 
