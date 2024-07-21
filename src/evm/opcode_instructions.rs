@@ -21,17 +21,26 @@ pub fn pushN(evm: &mut EVM) {
     evm.pc += 1;
     evm.gas_decrease(3);
 }
-pub fn mstore(evm: &mut EVM) {
-    println!("Starting mstore");
+
+// For full 32 bytes
+pub fn mstore(evm: &mut EVM) { 
     let address = evm.stack.pop();
     let value = evm.stack.pop();
-    println!("value: {:#?} and address: {:#?}", value, address);
-
     let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
-
     evm.memory.store(address_as_u64 as usize, &[value]);
     evm.gas_decrease(3);
 }
+
+// For 1 byte = 8 bits
+pub fn mstore8(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let value = evm.stack.pop();
+    let byte = (value.low_u64() & 0xFF) as u8;
+    let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
+    evm.memory.store(address_as_u64 as usize, &[U256::from(byte)]);
+    evm.gas_decrease(3);
+}
+
 
 fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
     data.chunks(4)
@@ -44,7 +53,6 @@ fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
 }
 
 pub fn mload(evm: &mut EVM) {
-    println!("Starting mload");
     let address = evm.stack.pop();
     let result = evm.memory.load(address.as_usize());
     match extract_u256(result) {
@@ -57,7 +65,8 @@ pub fn mload(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 
-pub fn extract_u256(result: Result<&[U256], MemoryError>) -> Option<U256> {
+
+fn extract_u256(result: Result<&[U256], MemoryError>) -> Option<U256> {
     match result {
         Ok(slice) => {
             // Handle cases where the slice may be empty or has fewer elements than expected
