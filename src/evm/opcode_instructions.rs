@@ -23,15 +23,13 @@ pub fn pushN(evm: &mut EVM) {
 }
 pub fn mstore(evm: &mut EVM) {
     println!("Starting mstore");
-    let value = evm.stack.pop();
     let address = evm.stack.pop();
+    let value = evm.stack.pop();
     println!("value: {:#?} and address: {:#?}", value, address);
 
     let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
 
     evm.memory.store(address_as_u64 as usize, &[value]);
-
-    evm.pc += 1;
     evm.gas_decrease(3);
 }
 
@@ -56,7 +54,6 @@ pub fn mload(evm: &mut EVM) {
             panic!("Failed to load value from memory");
         }
     }
-    evm.pc += 1;
     evm.gas_decrease(3);
 }
 

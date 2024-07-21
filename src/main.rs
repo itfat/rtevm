@@ -42,15 +42,16 @@ fn main() {
     println!("--------EVM--------");
     // let program = vec![0x60, 0x0d, 0x60, 0x0e, 0x01];
     let program = vec![
-        0x60, 0x0d,  // PUSH1 13
-        0x60, 0x0e,  // PUSH1 14
-        0x01,        // ADD
-        0x60, 0x0e,  // PUSH1  offset
-        0x60, 0x0f,    // PUSH1 value
-        // 0x52,        // MSTORE
-        // 0x51,
-        0x00
-    ];
+    0x60, 0x0c,  // PUSH1 12
+    0x60, 0x0d,  // PUSH1 13
+    0x60, 0x0e,  // PUSH1 14
+    0x01,        // ADD (push result 27 onto stack)
+    0x60, 0x00,  // PUSH1 0 (address for MSTORE)
+    0x52,        // MSTORE (store 27 at address 0)
+    0x60, 0x00,  // PUSH1 0 (address for MLOAD)
+    0x51,        // MLOAD (load value from address 0)
+    0x00         // STOP
+];
 
     let call_data = vec![];
     let sender = H160::zero();  
