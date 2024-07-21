@@ -45,16 +45,11 @@ fn main() {
         0x60, 0x0d,  // PUSH1 13
         0x60, 0x0e,  // PUSH1 14
         0x01,        // ADD
-        0x60, 0x0e,  // PUSH1 1
-        0x52,        // MSTORE
-        // 0x60, 0x20,  // PUSH1 0x20
-        // 0x51,        // MLOAD
-        // 0x60, 0x01,  // PUSH1 0x01
-        // 0x60, 0x00,  // PUSH1 0x00
-        // 0x54,        // SSTORE
-        // 0x60, 0x01,  // PUSH1 0x01
-        // 0x53,        // SLOAD
-        0x00         // STOP
+        0x60, 0x0e,  // PUSH1  offset
+        0x60, 0x0f,    // PUSH1 value
+        // 0x52,        // MSTORE
+        // 0x51,
+        0x00
     ];
 
     let call_data = vec![];

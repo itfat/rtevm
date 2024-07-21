@@ -12,7 +12,6 @@ pub fn add(evm: &mut EVM) {
     let a = evm.stack.pop();
     let b = evm.stack.pop();
     evm.stack.push(a + b);
-    evm.pc += 1;
     evm.gas_decrease(3);
 }
 
@@ -23,15 +22,14 @@ pub fn pushN(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 pub fn mstore(evm: &mut EVM) {
+    println!("Starting mstore");
     let value = evm.stack.pop();
     let address = evm.stack.pop();
-    
-    // Convert U256 to u64. Ensure that the value fits into u64.
-    // This might require additional validation if the address is guaranteed to fit.
+    println!("value: {:#?} and address: {:#?}", value, address);
+
     let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
 
-    // Ensure you have defined `store` to handle `u32_value`
-    evm.storage.store(address_as_u64 as i32, &[value]);
+    evm.memory.store(address_as_u64 as usize, &[value]);
 
     evm.pc += 1;
     evm.gas_decrease(3);
@@ -48,6 +46,7 @@ fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
 }
 
 pub fn mload(evm: &mut EVM) {
+    println!("Starting mload");
     let address = evm.stack.pop();
     let result = evm.memory.load(address.as_usize());
     match extract_u256(result) {
