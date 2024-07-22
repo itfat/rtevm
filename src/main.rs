@@ -81,6 +81,30 @@ fn main() {
         0x60, 0x09,  // PUSH1 0
         0x60, 0x12,  // PUSH1 1
         0x15,        // ISZERO
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x16,        // AND
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x17,        // OR
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x18,        // XOR
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x19,        // NOT
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x1B,        // SHL
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x1C,        // SHR
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x1D,        // SAR
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x1E,        // BYTE
         0x00         // STOP
     ];
 

@@ -249,75 +249,67 @@ pub fn iszero(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 
-// pub fn and(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b & a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+// ----------- Bitwise -----------
+pub fn and(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b & a);
+    evm.gas_decrease(3);
+}
 
 
-// pub fn or(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b | a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn or(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b | a);
+    evm.gas_decrease(3);
+}
 
 
-// pub fn xor(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b ^ a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn xor(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b ^ a);
+    evm.gas_decrease(3);
+}
 
 
-// pub fn not(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     evm.stack.push(!a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn not(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    evm.stack.push(!a);
+    evm.gas_decrease(3);
+}
 
 
-// pub fn byte(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b >> (8 * a));
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn byte(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b >> (U256::from(8) * a));
+    evm.gas_decrease(3);
+}
 
 
-// pub fn shl(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b << a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn shl(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b << a);
+    evm.gas_decrease(3);
+}
 
 
-// pub fn shr(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b >> a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn shr(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b >> a);
+    evm.gas_decrease(3);
+}
 
-
-// pub fn sar(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push((b as i32 >> a) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn sar(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b >> a);
+    evm.gas_decrease(3);
+}
 
 
 // pub fn keccack256(evm: &mut EVM) {

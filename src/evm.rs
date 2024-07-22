@@ -95,6 +95,14 @@ impl EVM {
                 Opcode::SGT => opcode_instructions::sgt(self),
                 Opcode::EQ => opcode_instructions::eq(self),
                 Opcode::ISZERO => opcode_instructions::iszero(self),
+                Opcode::AND => opcode_instructions::and(self),
+                Opcode::OR => opcode_instructions::or(self),
+                Opcode::XOR => opcode_instructions::xor(self),
+                Opcode::NOT => opcode_instructions::not(self),
+                Opcode::BYTE => opcode_instructions::byte(self),
+                Opcode::SHL => opcode_instructions::shl(self),
+                Opcode::SHR => opcode_instructions::shr(self),
+                Opcode::SAR => opcode_instructions::sar(self),
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;
