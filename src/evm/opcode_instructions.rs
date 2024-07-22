@@ -106,81 +106,72 @@ fn u8_to_u32_vec(data: &[u8]) -> Vec<u32> {
         .collect()
 }
 
-// pub fn mul(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(a * b);
-//     evm.pc += 1;
-//     evm.gas_decrease(5);
-// }
+pub fn mul(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(a * b);
+    evm.gas_decrease(5);
+}
 
 
-// pub fn sub(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b - a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn sub(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b - a);
+    evm.gas_decrease(3);
+}
 
 
-// pub fn div(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b / a);
-//     evm.pc += 1;
-//     evm.gas_decrease(5);
-// }
+pub fn div(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b / a);
+    evm.gas_decrease(5);
+}
 
-// pub fn sdiv(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b / a);
-//     evm.pc += 1;
-//     evm.gas_decrease(5);
-// }
+pub fn sdiv(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b / a);
+    evm.gas_decrease(5);
+}
 
-// pub fn mod(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b % a);
-//     evm.pc += 1;
-//     evm.gas_decrease(5);
-// }
+pub fn _mod(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b % a);
+    evm.gas_decrease(5);
+}
 
-// pub fn smod(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b % a);
-//     evm.pc += 1;
-//     evm.gas_decrease(5);
-// }
+pub fn smod(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b % a);
+    evm.gas_decrease(5);
+}
 
-// pub fn add_mod(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     let c = evm.stack.pop();
-//     evm.stack.push((b + c) % a);
-//     evm.pc += 1;
-//     evm.gas_decrease(8);
-// }
+pub fn addmod(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let c = evm.stack.pop();
+    evm.stack.push((b + c) % a);
+    evm.gas_decrease(8);
+}
 
-// pub fn mul_mod(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     let c = evm.stack.pop();
-//     evm.stack.push((b * c) % a);
-//     evm.pc += 1;
-//     evm.gas_decrease(8);
-// }
+pub fn mulmod(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let c = evm.stack.pop();
+    evm.stack.push((b * c) % a);
+    evm.gas_decrease(8);
+}
 
-// pub fn exp(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push(b.pow(a as u32));
-//     evm.pc += 1;
-//     evm.gas_decrease(10);
-// }
+pub fn exp(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    evm.stack.push(b.pow(a));
+    evm.gas_decrease(10);
+}
 
 // pub fn signextend(evm: &mut EVM) {
 //     let b = evm.stack.pop();

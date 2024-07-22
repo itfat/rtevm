@@ -54,6 +54,21 @@ fn main() {
         0x55,        // SSTORE (store value at address 1 in storage)
         0x60, 0x01,  // PUSH1 1 (address for SLOAD)
         0x54,        // SLOAD (load value from address 1 in storage)
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x02,        // MUL
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x04,        // DIV
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x06,        // MOD
+        0x60, 0x90,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x03,        // SUB
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x0A,        // EXP
         0x00         // STOP
     ];
 

@@ -80,6 +80,15 @@ impl EVM {
                 Opcode::MSTORE8 => opcode_instructions::mstore8(self),
                 Opcode::SLOAD => opcode_instructions::sload(self),
                 Opcode::SSTORE => opcode_instructions::sstore(self),
+                Opcode::MUL => opcode_instructions::mul(self),
+                Opcode::SUB => opcode_instructions::sub(self),
+                Opcode::DIV => opcode_instructions::div(self),
+                Opcode::SDIV => opcode_instructions::sdiv(self),
+                Opcode::MOD => opcode_instructions::_mod(self),
+                Opcode::SMOD => opcode_instructions::smod(self),
+                Opcode::ADDMOD => opcode_instructions::addmod(self),
+                Opcode::MULMOD => opcode_instructions::mulmod(self),
+                Opcode::EXP => opcode_instructions::exp(self),
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;
