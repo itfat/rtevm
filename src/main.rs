@@ -69,6 +69,18 @@ fn main() {
         0x60, 0x09,  // PUSH1 0
         0x60, 0x12,  // PUSH1 1
         0x0A,        // EXP
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x10,        // LT
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x11,        // GT
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x14,        // EQ
+        0x60, 0x09,  // PUSH1 0
+        0x60, 0x12,  // PUSH1 1
+        0x15,        // ISZERO
         0x00         // STOP
     ];
 

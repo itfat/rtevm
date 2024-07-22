@@ -89,6 +89,12 @@ impl EVM {
                 Opcode::ADDMOD => opcode_instructions::addmod(self),
                 Opcode::MULMOD => opcode_instructions::mulmod(self),
                 Opcode::EXP => opcode_instructions::exp(self),
+                Opcode::LT => opcode_instructions::lt(self),
+                Opcode::GT => opcode_instructions::gt(self),
+                Opcode::SLT => opcode_instructions::slt(self),
+                Opcode::SGT => opcode_instructions::sgt(self),
+                Opcode::EQ => opcode_instructions::eq(self),
+                Opcode::ISZERO => opcode_instructions::iszero(self),
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;

@@ -197,57 +197,57 @@ pub fn exp(evm: &mut EVM) {
 // }
 
 
-// pub fn lt(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push((b < a) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }    
+// ----------- COMPARISON -----------
+pub fn lt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let result = if b < a { 1 } else { 0 };
+    evm.stack.push(U256::from(result));
+    evm.gas_decrease(3);
+}    
 
 
-// pub fn gt(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push((b > a) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn gt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let result = if b < a { 1 } else { 0 };
+    evm.stack.push(U256::from(result));
+    evm.gas_decrease(3);
+}
 
 
-// pub fn slt(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push((b < a) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn slt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let result = if b < a { 1 } else { 0 };
+    evm.stack.push(U256::from(result));
+    evm.gas_decrease(3);
+}
 
 
-// pub fn sgt(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push((b > a) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn sgt(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let result = if b < a { 1 } else { 0 };
+    evm.stack.push(U256::from(result));
+    evm.gas_decrease(3);
+}
 
 
-// pub fn eq(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     let b = evm.stack.pop();
-//     evm.stack.push((b == a) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn eq(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let b = evm.stack.pop();
+    let result = if a == b { 1 } else { 0 };
+    evm.stack.push(U256::from(result));
+    evm.gas_decrease(3);
+}
 
-
-// pub fn iszero(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     evm.stack.push((a == 0) as usize);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn iszero(evm: &mut EVM) {
+    let a = evm.stack.pop();
+    let result = if a == U256::zero() { 1 } else { 0 };
+    evm.stack.push(U256::from(result));
+    evm.gas_decrease(3);
+}
 
 // pub fn and(evm: &mut EVM) {
 //     let a = evm.stack.pop();
