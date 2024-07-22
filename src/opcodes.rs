@@ -207,6 +207,7 @@ impl Opcode {
             0x1B => Opcode::SHL,
             0x1C => Opcode::SHR,
             0x1D => Opcode::SAR,
+            0x20 => Opcode::KECCAK256,
             0x51 => Opcode::MLOAD,
             0x52 => Opcode::MSTORE,
             0x53 => Opcode::MSTORE8,

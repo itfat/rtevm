@@ -105,6 +105,9 @@ fn main() {
         0x60, 0x09,  // PUSH1 0
         0x60, 0x12,  // PUSH1 1
         0x1E,        // BYTE
+        0x60, 0x4,  // Byte offset in memory
+        0x60, 0x0,  // Byte length in memory
+        0x20,        // KECCAK256
         0x00         // STOP
     ];
 

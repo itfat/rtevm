@@ -70,7 +70,7 @@ impl EVM {
 
         while !self.stop_flag {
             let op_u8 = self.program[self.pc];
-            println!("{:#?}: {:#?}", self.pc, op_u8);
+            // println!("{:#?}: {:#?}", self.pc, op_u8);
             match Opcode::from_u8(op_u8) {
                 Opcode::STOP => opcode_instructions::stop(self),
                 Opcode::ADD => opcode_instructions::add(self),
@@ -103,6 +103,7 @@ impl EVM {
                 Opcode::SHL => opcode_instructions::shl(self),
                 Opcode::SHR => opcode_instructions::shr(self),
                 Opcode::SAR => opcode_instructions::sar(self),
+                Opcode::KECCAK256 => opcode_instructions::_keccak256(self),
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;

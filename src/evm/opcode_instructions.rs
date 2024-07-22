@@ -1,6 +1,8 @@
 use crate::evm::EVM;
 use crate::memory::MemoryError;
 use ethereum_types::U256;
+use tiny_keccak::Keccak;
+use tiny_keccak::Hasher;
 
 
 pub fn stop(evm: &mut EVM) {
@@ -311,15 +313,30 @@ pub fn sar(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 
+// ----------- SHA3 -----------
+pub fn _keccak256(evm: &mut EVM) {
+   let offset = evm.stack.pop();
+   let size = evm.stack.pop();
+   println!("Offset is: {:?} and size is: {:?}", offset, size);
+   let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
+   println!("Data from memory is: {:?}", data);
+   let bytes: Vec<u8> = data.iter().flat_map(|u| {
+    let mut buf = [0u8; 32];
+    u.to_big_endian(&mut buf);
+    buf.to_vec()
+}).collect();
+   let hash = _keccak(&bytes);
+   evm.stack.push(U256::from_big_endian(&hash));
+   evm.gas_decrease(30);
+}
 
-// pub fn keccack256(evm: &mut EVM) {
-//    offset = evm.stack.pop();
-//    size = evm.stack.pop();
-//    let data = evm.memory.access(offset, size).unwrap();
-//    evm.stack.push(keccak256(data));
-//    evm.pc += 1;
-//    evm.gas_decrease(30);
-// }
+fn _keccak(input: &[u8]) -> [u8; 32] {
+    let mut hasher = Keccak::v256();
+    let mut output = [0u8; 32];
+    hasher.update(input);
+    hasher.finalize(&mut output);
+    output
+}
 
 
 // // duplicate top stack item
