@@ -17,12 +17,11 @@ impl Memory {
         Memory { data: Vec::new() }
     }
 
-    pub fn access(&mut self, offset: usize, size: usize) -> Result<&[U256], MemoryError> {
+
+    // Updated for read
+    pub fn access(&self, offset: usize, size: usize) -> Result<&[U256], MemoryError> {
         if self.len() < offset + size {
-            let mut n_mem = vec![U256::zero(); offset + size];
-            n_mem[..self.len()].copy_from_slice(&self.data);
-            self.data = n_mem;
-            return Ok(&self.data[offset..offset + size]);
+            return Err(MemoryError::ErrOutOfBounds);
         }
 
         Ok(&self.data[offset..offset + size])

@@ -3,8 +3,16 @@ use crate::Storage;
 use crate::Memory;
 use crate::Stack;
 use crate::opcodes::Opcode;
+use ethereum_types::U256;
 
 mod opcode_instructions;
+
+
+#[derive(Debug)]
+struct LogEntry {
+    topics: Vec<U256>,
+    data: Vec<u8>,
+}
 
 #[derive(Debug)]
 pub struct EVM {
@@ -24,7 +32,7 @@ pub struct EVM {
     reverse_flag: bool,
 
     return_data: Vec<u8>,
-    logs: Vec<u8>,
+    logs: Vec<LogEntry>
 }
 
 impl EVM {
@@ -44,6 +52,14 @@ impl EVM {
             return_data: Vec::new(),
             logs: Vec::new(),
         }
+    }
+
+    fn log(&mut self, topics: Vec<U256>, data: Vec<u8>) {
+        let log = LogEntry {
+            topics,
+            data
+        };
+        self.logs.push(log);
     }
 
     pub fn gas_decrease(&mut self, gas: usize) {
@@ -104,6 +120,11 @@ impl EVM {
                 Opcode::SHR => opcode_instructions::shr(self),
                 Opcode::SAR => opcode_instructions::sar(self),
                 Opcode::KECCAK256 => opcode_instructions::_keccak256(self),
+                Opcode::LOG0 => opcode_instructions::log0(self),
+                Opcode::LOG1 => opcode_instructions::log1(self),
+                Opcode::LOG2 => opcode_instructions::log2(self),
+                Opcode::LOG3 => opcode_instructions::log3(self),
+                Opcode::LOG4 => opcode_instructions::log4(self),
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;

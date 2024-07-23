@@ -1,4 +1,4 @@
-use crate::evm::EVM;
+use crate::evm::{EVM, LogEntry};
 use crate::memory::MemoryError;
 use ethereum_types::U256;
 use tiny_keccak::Keccak;
@@ -338,6 +338,75 @@ fn _keccak(input: &[u8]) -> [u8; 32] {
     output
 }
 
+
+// ----------- LOG -----------
+pub fn log0(evm: &mut EVM) {
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
+    logs_handler(evm, vec![], data.to_vec());
+    evm.gas_decrease(375);
+}
+
+pub fn log1(evm: &mut EVM) {
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let topic1 = evm.stack.pop();
+    let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
+    logs_handler(evm, vec![topic1], data.to_vec());
+    evm.gas_decrease(750);
+}
+
+pub fn log2(evm: &mut EVM) {
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let topic1 = evm.stack.pop();
+    let topic2 = evm.stack.pop();
+    let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
+    logs_handler(evm, vec![topic1, topic2], data.to_vec());
+    evm.gas_decrease(1125);
+}
+
+pub fn log3(evm: &mut EVM) {
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let topic1 = evm.stack.pop();
+    let topic2 = evm.stack.pop();
+    let topic3 = evm.stack.pop();
+    let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
+    logs_handler(evm, vec![topic1, topic2, topic3], data.to_vec());
+    evm.gas_decrease(1500);
+}
+
+pub fn log4(evm: &mut EVM) {
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let topic1 = evm.stack.pop();
+    let topic2 = evm.stack.pop();
+    let topic3 = evm.stack.pop();
+    let topic4 = evm.stack.pop();
+    let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
+    logs_handler(evm, vec![topic1, topic2, topic3, topic4], data.to_vec());
+    evm.gas_decrease(1875);
+}
+
+fn u256_to_bytes(data: Vec<U256>) -> Vec<u8> {
+    let mut bytes = Vec::new();
+    for u in data {
+        let mut buffer = [0u8; 32];
+        u.to_big_endian(&mut buffer);
+        bytes.extend_from_slice(&buffer);
+    }
+    bytes
+}
+
+fn logs_handler(evm: &mut EVM, topics: Vec<U256>, data: Vec<U256>) {
+    let entry = LogEntry {
+        topics: topics,
+        data: u256_to_bytes(data),
+    };
+    evm.logs.push(entry);
+}
 
 // // duplicate top stack item
 // pub fn _dup(evm: &mut EVM) {
