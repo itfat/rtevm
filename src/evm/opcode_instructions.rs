@@ -352,6 +352,7 @@ pub fn log1(evm: &mut EVM) {
     let offset = evm.stack.pop();
     let size = evm.stack.pop();
     let topic1 = evm.stack.pop();
+    println!("Offset is: {:?} and size is: {:?}", offset, size);
     let data = evm.memory.access(offset.low_u64() as usize, size.low_u64() as usize).unwrap();
     logs_handler(evm, vec![topic1], data.to_vec());
     evm.gas_decrease(750);
