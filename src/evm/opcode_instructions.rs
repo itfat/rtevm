@@ -28,6 +28,12 @@ pub fn pushN(evm: &mut EVM, n: usize) {
     evm.gas_decrease(3);
     
 }
+
+pub fn swapN(evm: &mut EVM, n: usize) {
+    println!("SWAP N: {}", n);
+    evm.stack.swap(n);
+    evm.gas_decrease(3);
+}
 // For full 32 bytes
 pub fn mstore(evm: &mut EVM) { 
     let address = evm.stack.pop();

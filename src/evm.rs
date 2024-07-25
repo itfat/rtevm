@@ -156,6 +156,23 @@ impl EVM {
                 Opcode::LOG2 => opcode_instructions::log2(self),
                 Opcode::LOG3 => opcode_instructions::log3(self),
                 Opcode::LOG4 => opcode_instructions::log4(self),
+                Opcode::SWAP1 => opcode_instructions::swapN(self, 1),
+                Opcode::SWAP2 => opcode_instructions::swapN(self, 2),
+                Opcode::SWAP3 => opcode_instructions::swapN(self, 3),
+                Opcode::SWAP4 => opcode_instructions::swapN(self, 4),
+                Opcode::SWAP5 => opcode_instructions::swapN(self, 5),
+                Opcode::SWAP6 => opcode_instructions::swapN(self, 6),
+                Opcode::SWAP7 => opcode_instructions::swapN(self, 7),
+                Opcode::SWAP8 => opcode_instructions::swapN(self, 8),
+                Opcode::SWAP9 => opcode_instructions::swapN(self, 9),
+                Opcode::SWAP10 => opcode_instructions::swapN(self, 10),
+                Opcode::SWAP11 => opcode_instructions::swapN(self, 11),
+                Opcode::SWAP12 => opcode_instructions::swapN(self, 12),
+                Opcode::SWAP13 => opcode_instructions::swapN(self, 13),
+                Opcode::SWAP14 => opcode_instructions::swapN(self, 14),
+                Opcode::SWAP15 => opcode_instructions::swapN(self, 15),
+                Opcode::SWAP16 => opcode_instructions::swapN(self, 16),
+    
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
                     // self.stop_flag = true;

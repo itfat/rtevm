@@ -250,6 +250,23 @@ impl Opcode {
             0x7D => Opcode::PUSH30,
             0x7E => Opcode::PUSH31,
             0x7F => Opcode::PUSH32,
+
+            0x87 => Opcode::SWAP1,
+            0x88 => Opcode::SWAP2,
+            0x89 => Opcode::SWAP3,
+            0x8A => Opcode::SWAP4,
+            0x8B => Opcode::SWAP5,
+            0x8C => Opcode::SWAP6,
+            0x8D => Opcode::SWAP7,
+            0x8E => Opcode::SWAP8,
+            0x8F => Opcode::SWAP9,
+            0x90 => Opcode::SWAP10,
+            0x91 => Opcode::SWAP11,
+            0x92 => Opcode::SWAP12,
+            0x93 => Opcode::SWAP13,
+            0x94 => Opcode::SWAP14,
+            0x95 => Opcode::SWAP15,
+            0x96 => Opcode::SWAP16,
     
             _ => Opcode::INVALID // temporarily
         }

@@ -30,6 +30,19 @@ impl Stack {
         *self.data.last().unwrap()
     }
 
+    pub fn swap(&mut self, a: usize) {
+        if a >= self.data.len() {
+            panic!("{}", ERR_STACK_UNDERFLOW);
+        }
+        let index = self.data.len() - a - 1;
+        let top = self.data.pop();
+        println!("Top is: {:?}", top);
+        let swap = self.data[index];
+        println!("Swap is: {:?}", swap);
+        self.data[index] = top.unwrap();
+        self.data.push(swap);
+    }
+
     pub fn to_string(&self) -> String {
         let mut s = String::new();
         for i in 0..self.data.len() {
