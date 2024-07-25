@@ -17,13 +17,17 @@ pub fn add(evm: &mut EVM) {
     evm.gas_decrease(3);
 }
 
-pub fn pushN(evm: &mut EVM) {
-    let value = evm.program[evm.pc + 1];
-    evm.stack.push(U256::from(value));
-    evm.pc += 1;
-    evm.gas_decrease(3);
-}
+pub fn pushN(evm: &mut EVM, n: usize) {
+    let mut value_bytes = vec![0u8; 32];
+    for i in 0..n {
+        value_bytes[31 - i] = evm.program[evm.pc + 1 + i];
+    }
 
+    evm.stack.push(U256::from_big_endian(&value_bytes));
+    evm.pc += n;
+    evm.gas_decrease(3);
+    
+}
 // For full 32 bytes
 pub fn mstore(evm: &mut EVM) { 
     let address = evm.stack.pop();
