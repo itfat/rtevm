@@ -36,11 +36,14 @@ impl Stack {
         }
         let index = self.data.len() - a - 1;
         let top = self.data.pop();
-        println!("Top is: {:?}", top);
         let swap = self.data[index];
-        println!("Swap is: {:?}", swap);
         self.data[index] = top.unwrap();
         self.data.push(swap);
+    }
+
+    pub fn dup(&mut self, a: usize) {
+        let index = self.data.len() - a;
+        self.data.push(self.data[index]);
     }
 
     pub fn to_string(&self) -> String {

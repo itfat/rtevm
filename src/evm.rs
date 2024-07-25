@@ -172,6 +172,22 @@ impl EVM {
                 Opcode::SWAP14 => opcode_instructions::swapN(self, 14),
                 Opcode::SWAP15 => opcode_instructions::swapN(self, 15),
                 Opcode::SWAP16 => opcode_instructions::swapN(self, 16),
+                Opcode::DUP1 => opcode_instructions::dupN(self, 1),
+                Opcode::DUP2 => opcode_instructions::dupN(self, 2),
+                Opcode::DUP3 => opcode_instructions::dupN(self, 3),
+                Opcode::DUP4 => opcode_instructions::dupN(self, 4),
+                Opcode::DUP5 => opcode_instructions::dupN(self, 5),
+                Opcode::DUP6 => opcode_instructions::dupN(self, 6),
+                Opcode::DUP7 => opcode_instructions::dupN(self, 7),
+                Opcode::DUP8 => opcode_instructions::dupN(self, 8),
+                Opcode::DUP9 => opcode_instructions::dupN(self, 9),
+                Opcode::DUP10 => opcode_instructions::dupN(self, 10),
+                Opcode::DUP11 => opcode_instructions::dupN(self, 11),
+                Opcode::DUP12 => opcode_instructions::dupN(self, 12),
+                Opcode::DUP13 => opcode_instructions::dupN(self, 13),
+                Opcode::DUP14 => opcode_instructions::dupN(self, 14),
+                Opcode::DUP15 => opcode_instructions::dupN(self, 15),
+                Opcode::DUP16 => opcode_instructions::dupN(self, 16),
     
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
