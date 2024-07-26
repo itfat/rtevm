@@ -2,6 +2,7 @@ use ethereum_types::H160;
 use crate::Storage;
 use crate::Memory;
 use crate::Stack;
+use crate::Transient;
 use crate::opcodes::Opcode;
 use ethereum_types::U256;
 
@@ -20,6 +21,7 @@ pub struct EVM {
     stack: Stack,
     memory: Memory,
     storage: Storage,
+    transient: Transient,
 
     sender: H160,
     program: Vec<u8>,
@@ -42,6 +44,7 @@ impl EVM {
             stack: Stack::new(),
             memory: Memory::new(),
             storage: Storage::new(),
+            transient: Transient::new(),
             sender,
             program,
             gas,
@@ -208,6 +211,7 @@ impl EVM {
         self.stack = Stack::new();
         self.memory = Memory::new();
         self.storage = Storage::new();
+        self.transient = Transient::new();
         self.gas = self.gas;
         self.value = self.value;
         self.call_data = Vec::new();

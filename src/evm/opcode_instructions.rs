@@ -457,7 +457,27 @@ pub fn pop(evm: &mut EVM) {
     evm.stack.pop();
     evm.gas_decrease(2);
 }
+// ----------- TRANSIENT ----------
+pub fn tstore(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let value = evm.stack.pop();
+    let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
+    evm.transient.store(address_as_u64 as i32, &[value]);
+    evm.gas_decrease(100);
+}
+pub fn tload(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
+    let result = evm.transient.load(address_as_u64 as i32);
+    let value = if let Some(&val) = result.get(0) {
+        val
+    } else {
+        U256::zero()
+    };
 
+    evm.stack.push(value);
+    evm.gas_decrease(100);
+}
 // pub fn address(evm: &mut EVM) {
 //     evm.stack.push(evm.sender);
 //     evm.pc += 1;

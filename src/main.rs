@@ -7,12 +7,14 @@ use memory::Memory;
 mod storage;
 use storage::Storage;
 
+mod transient;
+use transient::Transient;
+
 mod evm;
 use evm::EVM;
 use ethereum_types::{U256, H160};
 
 mod opcodes;
-use opcodes::Opcode;
 
 fn main() {
     // println!("--------Stack--------");
@@ -187,13 +189,21 @@ fn main() {
 //     0x00        // STOP
 // ];
 
+    // let program = vec![
+    //     0x60, 0x01, // PUSH1 0x01
+    //     0x60, 0x02, // PUSH1 0x02
+    //     0x60, 0x03, // PUSH1 0x03
+    //     0x50,       // POP
+    //     0x00        // STOP
+    // ];
     let program = vec![
-        0x60, 0x01, // PUSH1 0x01
-        0x60, 0x02, // PUSH1 0x02
-        0x60, 0x03, // PUSH1 0x03
-        0x50,       // POP
-        0x00        // STOP
-    ];
+    0x60, 0x01,       // PUSH1 0x01
+    0x60, 0x42,       // PUSH1 0x42
+    0x5D,             // TSTORE
+    0x60, 0x01,       // PUSH1 0x01
+    // 0x5C,             // TLOAD
+    0x00              // STOP
+];
     let call_data = vec![];
     let sender = H160::zero();  
     let gas = 5000;  

@@ -1,4 +1,8 @@
-struct Transient {
+use std::collections::HashMap;
+use ethereum_types::U256;
+
+#[derive(Debug)]
+pub struct Transient {
     data: HashMap<i32, Vec<U256>>, //value can be up to 32 bytes
 }
 
@@ -9,10 +13,10 @@ impl Transient {
         }
     }
 
-    pub fn load(&mut self, key: i32) -> (bool, Vec<U256>) {
+    pub fn load(&mut self, key: i32) -> Vec<U256> {
         match self.data.get(&key) {
-            Some(data) => (warm_access, data.clone()),
-            None => (false, vec![U256::zero()]),
+            Some(data) => data.clone(),
+            None => vec![U256::zero()],
         }
     }
 
@@ -21,6 +25,6 @@ impl Transient {
     }
 
     pub fn clear(&mut self) {
-        self.data = self.new();
+        self.data = HashMap::new();
     }
 }
