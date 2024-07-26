@@ -284,6 +284,10 @@ impl Opcode {
             0x9D => Opcode::SWAP14,
             0x9E => Opcode::SWAP15,
             0x9F => Opcode::SWAP16,
+            0x56 => Opcode::JUMP,
+            0x57 => Opcode::JUMPI,
+            0x58 => Opcode::PC,
+            0x5B => Opcode::JUMPDEST,
     
             _ => Opcode::INVALID // temporarily
         }

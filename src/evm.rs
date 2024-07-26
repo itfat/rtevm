@@ -188,6 +188,10 @@ impl EVM {
                 Opcode::DUP14 => opcode_instructions::dupN(self, 14),
                 Opcode::DUP15 => opcode_instructions::dupN(self, 15),
                 Opcode::DUP16 => opcode_instructions::dupN(self, 16),
+                Opcode::JUMP => opcode_instructions::jump(self),
+                Opcode::JUMPI => opcode_instructions::jumpi(self),
+                Opcode::PC => opcode_instructions::pc(self),
+                Opcode::JUMPDEST => opcode_instructions::jumpdest(self),
     
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);

@@ -1,8 +1,7 @@
 use crate::evm::{EVM, LogEntry};
 use crate::memory::MemoryError;
 use ethereum_types::U256;
-use tiny_keccak::Keccak;
-use tiny_keccak::Hasher;
+use tiny_keccak::{Keccak, Hasher};
 
 
 pub fn stop(evm: &mut EVM) {
@@ -422,60 +421,39 @@ fn logs_handler(evm: &mut EVM, topics: Vec<U256>, data: Vec<U256>) {
     };
     evm.logs.push(entry);
 }
+// ----------- JUMP ----------
+pub fn jump(evm: &mut EVM) {
+    let counter = evm.stack.pop().low_u64() as usize;
+    if evm.program[counter] != 0x5B {
+        panic!("Invalid jump instruction");
+    }
+    evm.pc = counter;
+    evm.gas_decrease(8);
+}
 
-// // duplicate top stack item
-// pub fn _dup(evm: &mut EVM) {
-//     let a = evm.stack.pop();
-//     evm.stack.push(a);
-//     evm.stack.push(a);
-//     evm.pc += 1;
-//     evm.gas_decrease(3);
-// }
+pub fn jumpi(evm: &mut EVM) {
+    let counter = evm.stack.pop().low_u64() as usize;
+    let condition = evm.stack.pop();
+    if evm.program[counter] != 0x5B || condition == U256::zero() {
+        evm.pc += 1;
+    } else {
+        evm.pc = counter;
+    }
+    evm.gas_decrease(10);
+}
 
-// // swap top of stack with another item given by n
-// pub fn swap(evm: &mut EVM, n: u8) {
-//     if evm.stack.len() > n+1 as usize {
-//         self.stack.swap(0 as usize, n+1 as usize);
-//     }
+pub fn pc(evm: &mut EVM) {
+    evm.stack.push(U256::from(evm.pc));
+    evm.pc += 1;
+    evm.gas_decrease(2);
+}
 
-//     self.pc += 1;
-//     self.gas_decrease(3);
-// }
-
+pub fn jump_dest(evm: &mut EVM) {
+    evm.gas_decrease(1);
+}
 
 // pub fn address(evm: &mut EVM) {
 //     evm.stack.push(evm.sender);
 //     evm.pc += 1;
 //     evm.gas_decrease(2);
-// }
-
-// pub fn jump(evm: &mut EVM) {
-//     let counter = evm.stack.pop();
-//     if evm.program[counter] != JUMPDEST {
-//         panic!("Invalid jump instruction");
-//     }
-//     evm.pc = counter;
-//     evm.gas_decrease(8);
-// }
-
-// pub fn jumpi(evm: &mut EVM) {
-//     let counter = evm.stack.pop();
-//     let cond = evm.stack.pop();
-//     if evm.program[counter] != JUMPDEST || cond == 0 {
-//         evm.pc += 1;
-//     } else {
-//         evm.pc = counter;
-//     }
-//     evm.gas_decrease(10);
-// }
-
-// pub fn pc(evm: &mut EVM) {
-//     evm.stack.push(evm.pc);
-//     evm.pc += 1;
-//     evm.gas_decrease(2);
-// }
-
-// pub fn jump_dest(evm: &mut EVM) {
-//     evm.pc += 1;
-//     evm.gas_decrease(1);
 // }
