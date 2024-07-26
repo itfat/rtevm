@@ -424,6 +424,8 @@ fn logs_handler(evm: &mut EVM, topics: Vec<U256>, data: Vec<U256>) {
 // ----------- JUMP ----------
 pub fn jump(evm: &mut EVM) {
     let counter = evm.stack.pop().low_u64() as usize;
+    println!("Counter is: {}", counter);
+    println!("Value at counter is: {}", evm.program[counter]);
     if evm.program[counter] != 0x5B {
         panic!("Invalid jump instruction");
     }
@@ -434,6 +436,9 @@ pub fn jump(evm: &mut EVM) {
 pub fn jumpi(evm: &mut EVM) {
     let counter = evm.stack.pop().low_u64() as usize;
     let condition = evm.stack.pop();
+    println!("Counter is: {}", counter);
+    println!("Value at counter is: {}", evm.program[counter]);
+    println!("Condition is: {}", condition);
     if evm.program[counter] != 0x5B || condition == U256::zero() {
         evm.pc += 1;
     } else {
