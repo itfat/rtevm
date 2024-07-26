@@ -172,20 +172,28 @@ fn main() {
     //     0x82,       // DUP3
     //     0x00        // STOP
     // ];
+//     let program = vec![
+//     0x60, 0x04, // PUSH1 0x04 (address of JUMPDEST)
+//     0x56,       // JUMP
+//     0x01,       // ADD (should be unreachable if jump is correct)
+//     0x5B,       // JUMPDEST
+//     0x60, 0x01, // PUSH1 0x01
+//     0x60, 0x02, // PUSH1 0x02
+//     0x60, 0x0c, // PUSH1 0x08 (address of next JUMPDEST)
+//     0x57,       // JUMPI
+//     0x5B,       // JUMPDEST
+//     0x58,       // PC
+//     0x50,       // POP
+//     0x00        // STOP
+// ];
+
     let program = vec![
-    0x60, 0x04, // PUSH1 0x04 (address of JUMPDEST)
-    0x56,       // JUMP
-    0x01,       // ADD (should be unreachable if jump is correct)
-    0x5B,       // JUMPDEST
-    0x60, 0x01, // PUSH1 0x01
-    0x60, 0x02, // PUSH1 0x02
-    0x60, 0x0c, // PUSH1 0x08 (address of next JUMPDEST)
-    0x57,       // JUMPI
-    0x5B,       // JUMPDEST
-    0x58,       // PC
-    0x51,       // POP
-    0x00        // STOP
-];
+        0x60, 0x01, // PUSH1 0x01
+        0x60, 0x02, // PUSH1 0x02
+        0x60, 0x03, // PUSH1 0x03
+        0x50,       // POP
+        0x00        // STOP
+    ];
     let call_data = vec![];
     let sender = H160::zero();  
     let gas = 5000;  

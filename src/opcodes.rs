@@ -213,6 +213,7 @@ impl Opcode {
             0xA2 => Opcode::LOG2,
             0xA3 => Opcode::LOG3,
             0xA4 => Opcode::LOG4,
+            0x50 => Opcode::POP,
             0x51 => Opcode::MLOAD,
             0x52 => Opcode::MSTORE,
             0x53 => Opcode::MSTORE8,
