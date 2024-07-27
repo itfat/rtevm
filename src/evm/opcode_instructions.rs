@@ -542,16 +542,46 @@ pub fn codesize(evm: &mut EVM) {
 }
 
 pub fn codecopy(evm: &mut EVM) { // Copy running code of this environment to memory
-    let offset = evm.stack.pop();
-    let size = evm.stack.pop();
-    let mut data = Vec::new();
-    for i in 0..size.low_u64() {
-        data.push(evm.program[evm.pc + 1 + i as usize]);
-    }
-    evm.memory.store(offset.as_usize(), &data);
-    evm.gas_decrease(3);
+     let offset = evm.stack.pop().as_usize();
+     let size = evm.stack.pop().as_usize();
+     let code_start = evm.pc; // Start of the code to copy
+     let code_end = (code_start + size).min(evm.program.len()); // Avoid out-of-bounds
+     let code_slice = &evm.program[code_start..code_end];
+     evm.memory.store(offset, code_slice);
+     evm.gas_decrease(3);
 }
 
 pub fn gasprice(evm: &mut EVM) { // Get price of gas in current environment in Wei
+    evm.stack.push(U256::from(1)); // random - gas price per unit gas
+    evm.gas_decrease(2);
 }
 
+pub fn extcodesize(evm: &mut EVM) { // Get size of code at given contractaddress
+    let address = evm.stack.pop();
+    let address_as_u64 = address.low_u64(); 
+    evm.stack.push(U256::from(0)); 
+    evm.gas_decrease(2600);
+}
+
+pub fn extcodecopy(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let offset = evm.stack.pop().as_usize();
+    let size = evm.stack.pop().as_usize();
+    let code = evm.get_code_at(address.low_u64()); 
+    let code_slice = &code[..size.min(code.len())]; 
+    let mem_expansion_cost = evm.memory.store(offset, code_slice);
+    evm.gas_decrease(2600);
+}
+
+pub fn returndatasize(evm: &mut EVM) {
+    evm.stack.push(U256::from(evm.return_data.len()));
+    evm.gas_decrease(2);
+}
+
+pub fn returndatacopy(evm: &mut EVM) {
+    let offset = evm.stack.pop().as_usize();
+    let size = evm.stack.pop().as_usize();
+    let ret_data_copy = &evm.return_data[..size.min(evm.return_data.len())];
+    evm.memory.store(offset, ret_data_copy);
+    evm.gas_decrease(3);
+}
