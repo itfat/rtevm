@@ -1,6 +1,6 @@
 use crate::evm::{EVM, LogEntry};
 use crate::memory::MemoryError;
-use ethereum_types::U256;
+use ethereum_types::{H160, U256};
 use tiny_keccak::{Keccak, Hasher};
 
 
@@ -478,8 +478,80 @@ pub fn tload(evm: &mut EVM) {
     evm.stack.push(value);
     evm.gas_decrease(100);
 }
-// pub fn address(evm: &mut EVM) {
-//     evm.stack.push(evm.sender);
-//     evm.pc += 1;
-//     evm.gas_decrease(2);
-// }
+
+// ----------- ETHEREUM ---------- [MOCKED]
+fn h160_to_u256(address: H160) -> U256 {
+    U256::from_big_endian(&address.0)
+}
+pub fn address(evm: &mut EVM) {
+    evm.stack.push(h160_to_u256(evm.sender));
+    evm.gas_decrease(2);
+}
+
+pub fn balance(evm: &mut EVM) {
+    let address = evm.stack.pop();
+    let balance = U256::from_big_endian(b"99999"); 
+    evm.stack.push(balance);
+    evm.gas_decrease(2600); //gas in case of cold address state
+}
+
+pub fn origin(evm: &mut EVM) {
+    evm.stack.push(h160_to_u256(evm.sender)); // must pass address of account that initiated the txn, not same as sender in case of contracts calling other contracts - sender in an immediate caller
+    evm.gas_decrease(2);
+}
+
+pub fn caller(evm: &mut EVM) {
+    evm.stack.push(h160_to_u256(H160::random())); // caller is the one who invoked current function - random here
+    evm.gas_decrease(2);
+}
+
+pub fn callvalue(evm: &mut EVM) {
+    evm.stack.push(U256::from(evm.value)); // ETH value sent with a call
+    evm.gas_decrease(2);
+}
+
+pub fn calldataload(evm: &mut EVM) { // reads 32 byte data from calldata starting from offset and push onto stack
+    let offset = evm.stack.pop();
+    let mut data = Vec::new();
+    for i in 0..32 {
+        data.push(evm.call_data[offset.low_u64() as usize + i]);
+    }
+    evm.stack.push(U256::from_big_endian(&data));
+    evm.gas_decrease(3);
+}
+
+pub fn calldatasize(evm: &mut EVM) { // Get size of call data in current environment
+    evm.stack.push(U256::from(evm.call_data.len()));
+    evm.gas_decrease(2);
+}
+
+pub fn calldatacopy(evm: &mut EVM) { // Copy input data of this environment to memory
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let mut data = Vec::new();
+    for i in 0..size.low_u64() {
+        data.push(evm.call_data[evm.pc + 1 + i as usize]);
+    }
+    evm.memory.store(offset.as_usize(), &data);
+    evm.gas_decrease(3);
+}
+
+pub fn codesize(evm: &mut EVM) {
+    evm.stack.push(U256::from(evm.program.len()));
+    evm.gas_decrease(2);
+}
+
+pub fn codecopy(evm: &mut EVM) { // Copy running code of this environment to memory
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let mut data = Vec::new();
+    for i in 0..size.low_u64() {
+        data.push(evm.program[evm.pc + 1 + i as usize]);
+    }
+    evm.memory.store(offset.as_usize(), &data);
+    evm.gas_decrease(3);
+}
+
+pub fn gasprice(evm: &mut EVM) { // Get price of gas in current environment in Wei
+}
+

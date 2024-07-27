@@ -23,7 +23,7 @@ pub struct EVM {
     storage: Storage,
     transient: Transient,
 
-    sender: H160,
+    sender: H160, //address 20-bytes
     program: Vec<u8>,
     gas: usize,
     value: usize,
