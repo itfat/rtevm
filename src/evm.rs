@@ -196,6 +196,8 @@ impl EVM {
                 Opcode::PC => opcode_instructions::pc(self),
                 Opcode::JUMPDEST => opcode_instructions::jump_dest(self),
                 Opcode::POP => opcode_instructions::pop(self),
+                Opcode::TSTORE => opcode_instructions::tstore(self),
+                Opcode::TLOAD => opcode_instructions::tload(self),
     
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
