@@ -531,7 +531,7 @@ pub fn calldatacopy(evm: &mut EVM) { // Copy specified part of input data of thi
     let size = evm.stack.pop();
     let mut data = Vec::new();
     data = evm.call_data[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
-    evm.memory.store(dest_offset.low_u64() as usize, &U256::from_big_endian(&data));
+    evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]);
     evm.gas_decrease(3);
 }
 
@@ -546,7 +546,7 @@ pub fn codecopy(evm: &mut EVM) { // Copy running code of this environment to mem
     let size = evm.stack.pop();
     let mut data = Vec::new();
     data = evm.program[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
-    evm.memory.store(dest_offset.low_u64() as usize, &U256::from_big_endian(&data));
+    evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]);
     evm.gas_decrease(3);
 }
 
@@ -567,8 +567,8 @@ pub fn extcodecopy(evm: &mut EVM) {
     let dest_offset = evm.stack.pop();
     let offset = evm.stack.pop().as_usize();
     let size = evm.stack.pop().as_usize();
-    let code = [];  // no external code
-    let mem_expansion_cost = evm.memory.store(dest_offset.low_u64() as usize, code);
+    let code = U256::from(0);  // no external code
+    let mem_expansion_cost = evm.memory.store(dest_offset.low_u64() as usize, &[code]);
     evm.gas_decrease(2600);
 }
 
@@ -583,7 +583,7 @@ pub fn returndatacopy(evm: &mut EVM) {
     let size = evm.stack.pop();
     let mut data = Vec::new();
     data = evm.return_data[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
-    evm.memory.store(dest_offset.low_u64() as usize, &U256::from_big_endian(&data));
+    evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]); 
     evm.gas_decrease(3);
 }
 
@@ -595,7 +595,7 @@ pub fn extcodehash(evm: &mut EVM) { // Get hash of code at given contractaddress
 
 pub fn blockhash(evm: &mut EVM) { // Get hash of one of the 256 most recent block headers
     let block_no = evm.stack.pop();
-    evm.stack.push(U256::random()); 
+    evm.stack.push(U256::zero()); 
     evm.gas_decrease(20);
 }
 
