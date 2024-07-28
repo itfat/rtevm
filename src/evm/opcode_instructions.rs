@@ -2,6 +2,7 @@ use crate::evm::{EVM, LogEntry};
 use crate::memory::MemoryError;
 use ethereum_types::{H160, U256};
 use tiny_keccak::{Keccak, Hasher};
+use crate::helper::Helper;
 
 
 pub fn stop(evm: &mut EVM) {
@@ -42,8 +43,8 @@ pub fn mstore(evm: &mut EVM) {
     let address = evm.stack.pop();
     let value = evm.stack.pop();
     let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
-    evm.memory.store(address_as_u64 as usize, &[value]);
-    evm.gas_decrease(3);
+    let mem_expansion_cost = evm.memory.store(address_as_u64 as usize, &[value]).unwrap();
+    evm.gas_decrease(3 + mem_expansion_cost);
 }
 
 // For 1 byte = 8 bits
@@ -52,8 +53,8 @@ pub fn mstore8(evm: &mut EVM) {
     let value = evm.stack.pop();
     let byte = (value.low_u64() & 0xFF) as u8;
     let address_as_u64 = address.low_u64(); // This gets the lower 64 bits
-    evm.memory.store(address_as_u64 as usize, &[U256::from(byte)]);
-    evm.gas_decrease(3);
+    let mem_expansion_cost = evm.memory.store(address_as_u64 as usize, &[U256::from(byte)]).unwrap();
+    evm.gas_decrease(3 + mem_expansion_cost);
 }
 
 pub fn mload(evm: &mut EVM) {
@@ -569,6 +570,7 @@ pub fn extcodecopy(evm: &mut EVM) {
     let size = evm.stack.pop().as_usize();
     let code = U256::from(0);  // no external code
     let mem_expansion_cost = evm.memory.store(dest_offset.low_u64() as usize, &[code]);
+
     evm.gas_decrease(2600);
 }
 
@@ -583,8 +585,9 @@ pub fn returndatacopy(evm: &mut EVM) {
     let size = evm.stack.pop();
     let mut data = Vec::new();
     data = evm.return_data[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
-    evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]); 
-    evm.gas_decrease(3);
+    let mem_expansion_cost = evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]).unwrap(); 
+    let dynamic_gas = Helper::to_word_size(size.low_u64() as usize) * 3 + mem_expansion_cost;
+    evm.gas_decrease(dynamic_gas);
 }
 
 pub fn extcodehash(evm: &mut EVM) { // Get hash of code at given contractaddress

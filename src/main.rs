@@ -12,10 +12,10 @@ use transient::Transient;
 
 mod evm;
 use evm::EVM;
-use ethereum_types::{U256, H160};
+use ethereum_types::H160;
 
 mod opcodes;
-
+mod helper;
 fn main() {
     // println!("--------Stack--------");
     // let mut stack = Stack::new();
