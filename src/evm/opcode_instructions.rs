@@ -506,7 +506,7 @@ pub fn caller(evm: &mut EVM) {
 }
 
 pub fn callvalue(evm: &mut EVM) {
-    evm.stack.push(U256::from(evm.value)); // ETH value sent with a call
+    evm.stack.push(U256::from(evm.value)); // ETH value sent with a call for execution
     evm.gas_decrease(2);
 }
 
@@ -525,34 +525,33 @@ pub fn calldatasize(evm: &mut EVM) { // Get size of call data in current environ
     evm.gas_decrease(2);
 }
 
-pub fn calldatacopy(evm: &mut EVM) { // Copy input data of this environment to memory
+pub fn calldatacopy(evm: &mut EVM) { // Copy specified part of input data of this environment to memory
+    let dest_offset = evm.stack.pop();
     let offset = evm.stack.pop();
     let size = evm.stack.pop();
     let mut data = Vec::new();
-    for i in 0..size.low_u64() {
-        data.push(evm.call_data[evm.pc + 1 + i as usize]);
-    }
-    evm.memory.store(offset.as_usize(), &data);
+    data = evm.call_data[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
+    evm.memory.store(dest_offset.low_u64() as usize, &U256::from_big_endian(&data));
     evm.gas_decrease(3);
 }
 
-pub fn codesize(evm: &mut EVM) {
+pub fn codesize(evm: &mut EVM) { // pushed size of currently running code
     evm.stack.push(U256::from(evm.program.len()));
     evm.gas_decrease(2);
 }
 
 pub fn codecopy(evm: &mut EVM) { // Copy running code of this environment to memory
-     let offset = evm.stack.pop().as_usize();
-     let size = evm.stack.pop().as_usize();
-     let code_start = evm.pc; // Start of the code to copy
-     let code_end = (code_start + size).min(evm.program.len()); // Avoid out-of-bounds
-     let code_slice = &evm.program[code_start..code_end];
-     evm.memory.store(offset, code_slice);
-     evm.gas_decrease(3);
+    let dest_offset = evm.stack.pop();
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let mut data = Vec::new();
+    data = evm.program[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
+    evm.memory.store(dest_offset.low_u64() as usize, &U256::from_big_endian(&data));
+    evm.gas_decrease(3);
 }
 
 pub fn gasprice(evm: &mut EVM) { // Get price of gas in current environment in Wei
-    evm.stack.push(U256::from(1)); // random - gas price per unit gas
+    evm.stack.push(U256::from(0x00)); // random - gas price per unit gas
     evm.gas_decrease(2);
 }
 
@@ -565,24 +564,43 @@ pub fn extcodesize(evm: &mut EVM) { // Get size of code at given contractaddress
 
 pub fn extcodecopy(evm: &mut EVM) {
     let address = evm.stack.pop();
+    let dest_offset = evm.stack.pop();
     let offset = evm.stack.pop().as_usize();
     let size = evm.stack.pop().as_usize();
-    let code = evm.get_code_at(address.low_u64()); 
-    let code_slice = &code[..size.min(code.len())]; 
-    let mem_expansion_cost = evm.memory.store(offset, code_slice);
+    let code = [];  // no external code
+    let mem_expansion_cost = evm.memory.store(dest_offset.low_u64() as usize, code);
     evm.gas_decrease(2600);
 }
 
-pub fn returndatasize(evm: &mut EVM) {
+pub fn returndatasize(evm: &mut EVM) { // Get size of return data in current environment from previous call
     evm.stack.push(U256::from(evm.return_data.len()));
     evm.gas_decrease(2);
 }
 
 pub fn returndatacopy(evm: &mut EVM) {
-    let offset = evm.stack.pop().as_usize();
-    let size = evm.stack.pop().as_usize();
-    let ret_data_copy = &evm.return_data[..size.min(evm.return_data.len())];
-    evm.memory.store(offset, ret_data_copy);
+    let dest_offset = evm.stack.pop();
+    let offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    let mut data = Vec::new();
+    data = evm.return_data[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
+    evm.memory.store(dest_offset.low_u64() as usize, &U256::from_big_endian(&data));
     evm.gas_decrease(3);
+}
+
+pub fn extcodehash(evm: &mut EVM) { // Get hash of code at given contractaddress
+    let _ = evm.stack.pop();
+    evm.stack.push(U256::from(0)); 
+    evm.gas_decrease(2600); // 100 if warm
+}
+
+pub fn blockhash(evm: &mut EVM) { // Get hash of one of the 256 most recent block headers
+    let block_no = evm.stack.pop();
+    evm.stack.push(U256::random()); 
+    evm.gas_decrease(20);
+}
+
+pub fn coinbase(evm: &mut EVM) { // Get address of miner of current block
+    evm.stack.push(h160_to_u256(H160::random())); 
+    evm.gas_decrease(2);
 }
 
