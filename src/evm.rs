@@ -198,6 +198,22 @@ impl EVM {
                 Opcode::POP => opcode_instructions::pop(self),
                 Opcode::TSTORE => opcode_instructions::tstore(self),
                 Opcode::TLOAD => opcode_instructions::tload(self),
+                
+                Opcode::ADDRESS => opcode_instructions::address(self),
+                Opcode::BALANCE => opcode_instructions::balance(self),
+                Opcode::ORIGIN => opcode_instructions::origin(self),
+                Opcode::CALLER => opcode_instructions::caller(self),
+                Opcode::CALLVALUE => opcode_instructions::callvalue(self),
+                Opcode::CALLDATALOAD => opcode_instructions::calldataload(self),
+                Opcode::CALLDATASIZE => opcode_instructions::calldatasize(self),
+                Opcode::CALLDATACOPY => opcode_instructions::calldatacopy(self),
+                Opcode::CODESIZE => opcode_instructions::codesize(self),
+                Opcode::CODECOPY => opcode_instructions::codecopy(self),
+                Opcode::GASPRICE => opcode_instructions::gasprice(self),
+                Opcode::EXTCODECOPY => opcode_instructions::extcodecopy(self),
+                Opcode::EXTCODESIZE => opcode_instructions::extcodesize(self),
+                Opcode::RETURNDATACOPY => opcode_instructions::returndatacopy(self),
+                Opcode::RETURNDATASIZE => opcode_instructions::returndatasize(self),
     
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);

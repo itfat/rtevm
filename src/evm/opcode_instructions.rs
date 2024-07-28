@@ -585,3 +585,4 @@ pub fn returndatacopy(evm: &mut EVM) {
     evm.memory.store(offset, ret_data_copy);
     evm.gas_decrease(3);
 }
+

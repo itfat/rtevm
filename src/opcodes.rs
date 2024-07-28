@@ -213,6 +213,23 @@ impl Opcode {
             0xA2 => Opcode::LOG2,
             0xA3 => Opcode::LOG3,
             0xA4 => Opcode::LOG4,
+            
+            0x30 => Opcode::ADDRESS,
+            0x31 => Opcode::BALANCE,
+            0x32 => Opcode::ORIGIN,
+            0x33 => Opcode::CALLER,
+            0x34 => Opcode::CALLVALUE,
+            0x35 => Opcode::CALLDATALOAD,
+            0x36 => Opcode::CALLDATASIZE,
+            0x37 => Opcode::CALLDATACOPY,
+            0x38 => Opcode::CODESIZE,
+            0x39 => Opcode::CODECOPY,
+            0x3A => Opcode::GASPRICE,
+            0x3B => Opcode::EXTCODESIZE,
+            0x3C => Opcode::EXTCODECOPY,
+            0x3D => Opcode::RETURNDATASIZE,
+            0x3E => Opcode::RETURNDATACOPY,
+
             0x50 => Opcode::POP,
             0x51 => Opcode::MLOAD,
             0x52 => Opcode::MSTORE,
@@ -291,6 +308,7 @@ impl Opcode {
             0x57 => Opcode::JUMPI,
             0x58 => Opcode::PC,
             0x5B => Opcode::JUMPDEST,
+
     
             _ => Opcode::INVALID // temporarily
         }
