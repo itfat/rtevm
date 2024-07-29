@@ -58,7 +58,7 @@ impl EVM {
 
 
     pub fn run(&mut self) {
-        while self.continue_ execution() {
+        while self.continue_execution() {
             let op_u8 = self.fetch_opcode();
             self.execute_opcode(op_u8);
             self.step_next();
@@ -90,14 +90,14 @@ impl EVM {
     }
 
     fn step_next(&mut self) {
-        if self.continue_ execution() {
+        if self.continue_execution() {
             self.pc += 1;
         } else {
             self.stop_flag = true;
         }
     }
 
-    fn continue_ execution(&self) -> bool {
+    fn continue_execution(&self) -> bool {
         self.pc < self.program.len() && !self.stop_flag && !self.revert_flag
     }
 
