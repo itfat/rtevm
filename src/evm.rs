@@ -57,14 +57,6 @@ impl EVM {
         }
     }
 
-    fn log(&mut self, topics: Vec<U256>, data: Vec<u8>) {
-        let log = LogEntry {
-            topics,
-            data
-        };
-        self.logs.push(log);
-    }
-
     pub fn gas_decrease(&mut self, gas: usize) {
         if self.gas < gas {
             panic!("Not enough gas");
@@ -74,14 +66,6 @@ impl EVM {
 
     pub fn peek(&mut self) -> u8 {
         self.program[self.pc]
-    }
-
-    pub fn step_next(&mut self) {
-        if self.pc < self.program.len() {
-            self.pc += 1;
-        } else {
-            self.stop_flag = true;
-        }
     }
 
 
@@ -239,5 +223,22 @@ impl EVM {
         self.revert_flag = false;
         self.return_data = Vec::new();
         self.logs = Vec::new();
+    }
+
+    // Helper functions
+    fn log(&mut self, topics: Vec<U256>, data: Vec<u8>) {
+        let log = LogEntry {
+            topics,
+            data
+        };
+        self.logs.push(log);
+    }
+
+    fn step_next(&mut self) {
+        if self.pc < self.program.len() && !self.stop_flag && !self.revert_flag {
+            self.pc += 1;
+        } else {
+            self.stop_flag = true;
+        }
     }
 }
