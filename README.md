@@ -8,12 +8,13 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Project Structure](#project)
+- [Modules](#modules)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
-
-RTEVM is a simplified Rust implementation of the Ethereum Virtual Machine (EVM). It simulates the execution environment for smart contracts on Ethereum, allowing developers to test and understand EVM behavior.
+The Ethereum Virtual Machine (EVM) is the runtime environment for smart contracts in Ethereum. It is responsible for executing bytecode and managing the state of the blockchain. This project implements a basic version of the EVM using Rust RTEVM, demonstrating the core functionalities and architecture of the EVM.
 
 ## Features
 
@@ -38,26 +39,88 @@ RTEVM is a simplified Rust implementation of the Ethereum Virtual Machine (EVM).
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/rtevm.git
 
-2. Navigate to the directory:
-   ```bash
-   cd rtevm
-   ```
-3. Build the project:
-   ```bash
-   cargo build --release
-   ```
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/yourusername/rust-evm.git
+    cd rtevm
+    ```
+
+2. Build the project:
+
+    ```sh
+    cargo build
+    ```
+
+3. Run the project:
+
+    ```sh
+    cargo run
+    ```
 
 ## Usage
 
-Run the program with the following command after adding input parameters to the evm program:
+The main entry point for the project is the `main.rs` file. It initializes an instance of the EVM and executes a sample bytecode program.
 
-```bash
-cargo run --release
+```rust
+fn main() {
+    println!("--------EVM--------");
+
+    let program = vec![
+        0x60, 0x01, // PUSH1 0x01
+        0x60, 0x42, // PUSH1 0x42
+        0x5D,       // TSTORE
+        0x60, 0x01, // PUSH1 0x01
+        0x5C,    // TLOAD
+        0x00        // STOP
+    ];
+
+    let call_data = vec![];
+    let sender = H160::zero();  
+    let gas = 5000;  
+    let value = 0;   
+
+    let mut evm = EVM::new(sender, gas, value, program, call_data);
+    println!("Initial EVM state: {:#?}", evm);
+
+    evm.run();
+
+    println!("Final EVM state: {:#?}", evm);
+}
 ```
+
+## Project Structure
+The project is structured into several modules, each handling different aspects of the EVM:
+
+```
+rtevm/
+├── Cargo.toml
+├── evm/
+│   ├── opcode_instructions.rs
+├── src/
+│   ├── main.rs
+│   ├── evm.rs
+│   ├── memory.rs
+│   ├── stack.rs
+│   ├── storage.rs
+│   ├── transient.rs
+│   ├── opcodes.rs
+│   ├── helper.rs
+
+
+```
+
+## Modules
+- `main.rs:` Entry point of the application, initializes and runs the EVM.
+- `evm.rs:` Core EVM logic, including opcode fetching, execution, and state management.
+- `opcode_instructions.rs:` Defines opcode instructions and their execution logic.
+- `memory.rs:` Manages memory operations.
+- `stack.rs:` Implements stack operations.
+- `storage.rs:` Handles persistent storage.
+- `transient.rs:` Manages transient (temporary) storage as in EIP-1153.
+- `opcodes.rs:` Defines supported opcodes and their execution logic.
+- `helper.rs:` Contains helper functions and utilities.
 
 ## Contributing
 
