@@ -213,7 +213,7 @@ impl Opcode {
             0xA2 => Opcode::LOG2,
             0xA3 => Opcode::LOG3,
             0xA4 => Opcode::LOG4,
-            
+
             0x30 => Opcode::ADDRESS,
             0x31 => Opcode::BALANCE,
             0x32 => Opcode::ORIGIN,
@@ -308,6 +308,9 @@ impl Opcode {
             0x57 => Opcode::JUMPI,
             0x58 => Opcode::PC,
             0x5B => Opcode::JUMPDEST,
+
+            0xF3 => Opcode::RETURN,
+            0xFD => Opcode::REVERT,
 
     
             _ => Opcode::INVALID // temporarily

@@ -525,6 +525,23 @@ pub fn coinbase(evm: &mut EVM) { // Get address of miner of current block
 }
 
 
+// ----------- CONTRACT -----------
+pub fn _return(evm: &mut EVM) { // Return data from current environment
+    let mem_dest_offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    evm.return_data = u256_to_bytes((*evm.memory.access(mem_dest_offset.low_u64() as usize, size.low_u64() as usize).unwrap()).to_vec()).to_vec();
+    evm.stop_flag = true
+}
+
+pub fn revert(evm: &mut EVM) { // Stops execution and reverts state changes
+    let mem_dest_offset = evm.stack.pop();
+    let size = evm.stack.pop();
+    evm.return_data = u256_to_bytes((*evm.memory.access(mem_dest_offset.low_u64() as usize, size.low_u64() as usize).unwrap()).to_vec()).to_vec();
+    evm.revert_flag = true
+}
+
+
+
 // Helper functions
 fn extract_u256(result: Result<&[U256], MemoryError>) -> Option<U256> {
     match result {

@@ -31,7 +31,7 @@ pub struct EVM {
     call_data: Vec<u8>,
 
     stop_flag: bool,
-    reverse_flag: bool,
+    revert_flag: bool,
 
     return_data: Vec<u8>,
     logs: Vec<LogEntry>
@@ -51,7 +51,7 @@ impl EVM {
             value,
             call_data,
             stop_flag: false,
-            reverse_flag: false,
+            revert_flag: false,
             return_data: Vec::new(),
             logs: Vec::new(),
         }
@@ -198,7 +198,7 @@ impl EVM {
                 Opcode::POP => opcode_instructions::pop(self),
                 Opcode::TSTORE => opcode_instructions::tstore(self),
                 Opcode::TLOAD => opcode_instructions::tload(self),
-                
+
                 Opcode::ADDRESS => opcode_instructions::address(self),
                 Opcode::BALANCE => opcode_instructions::balance(self),
                 Opcode::ORIGIN => opcode_instructions::origin(self),
@@ -214,6 +214,8 @@ impl EVM {
                 Opcode::EXTCODESIZE => opcode_instructions::extcodesize(self),
                 Opcode::RETURNDATACOPY => opcode_instructions::returndatacopy(self),
                 Opcode::RETURNDATASIZE => opcode_instructions::returndatasize(self),
+                Opcode::RETURN => opcode_instructions::_return(self),
+                Opcode::REVERT => opcode_instructions::revert(self),
     
                 _ => {
                     // panic!("Unknown opcode: {:#?}", op_u8);
@@ -234,7 +236,7 @@ impl EVM {
         self.value = self.value;
         self.call_data = Vec::new();
         self.stop_flag = false;
-        self.reverse_flag = false;
+        self.revert_flag = false;
         self.return_data = Vec::new();
         self.logs = Vec::new();
     }
