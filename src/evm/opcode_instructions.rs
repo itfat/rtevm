@@ -464,8 +464,9 @@ pub fn codecopy(evm: &mut EVM) { // Copy running code of this environment to mem
     let size = evm.stack.pop();
     let mut data = Vec::new();
     data = evm.program[offset.low_u64() as usize..offset.low_u64() as usize + size.low_u64() as usize].to_vec();
-    evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]);
-    evm.gas_decrease(3);
+    let mem_expansion_cost =evm.memory.store(dest_offset.low_u64() as usize, &[U256::from_big_endian(&data)]).unwrap();
+    let dynamic_gas = Helper::to_word_size(size.low_u64() as usize) * 3 + mem_expansion_cost;
+    evm.gas_decrease(dynamic_gas);
 }
 
 pub fn gasprice(evm: &mut EVM) { // Get price of gas in current environment in Wei
