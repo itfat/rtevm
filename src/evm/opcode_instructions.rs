@@ -184,7 +184,7 @@ pub fn sar(evm: &mut EVM) {
 }
 
 // ----------- PUSH -----------
-pub fn pushN(evm: &mut EVM, n: usize) {
+pub fn push_n(evm: &mut EVM, n: usize) {
     let mut value_bytes = vec![0u8; 32];
     for i in 0..n {
         value_bytes[31 - i] = evm.program[evm.pc + 1 + i];
@@ -203,13 +203,13 @@ pub fn pop(evm: &mut EVM) {
 }
 
 // ----------- SWAP -----------
-pub fn swapN(evm: &mut EVM, n: usize) {
+pub fn swap_n(evm: &mut EVM, n: usize) {
     evm.stack.swap(n);
     evm.gas_decrease(3);
 }
 
 // ----------- DUPLICATE -----------
-pub fn dupN(evm: &mut EVM, n: usize) {
+pub fn dun_n(evm: &mut EVM, n: usize) {
     evm.stack.dup(n);
     evm.gas_decrease(3);
 }
@@ -515,7 +515,7 @@ pub fn extcodehash(evm: &mut EVM) { // Get hash of code at given contractaddress
 }
 
 pub fn blockhash(evm: &mut EVM) { // Get hash of one of the 256 most recent block headers
-    let block_no = evm.stack.pop();
+    let _block_no = evm.stack.pop();
     evm.stack.push(U256::zero()); 
     evm.gas_decrease(20);
 }
