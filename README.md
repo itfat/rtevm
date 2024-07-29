@@ -33,7 +33,8 @@ RTEVM is a simplified Rust implementation of the Ethereum Virtual Machine (EVM).
   - Other: `POP`, `STOP`, `KECCAK256`
 - Stack and memory management
 - Logging support
-- Gas computation - static
+- Gas computation - static and dynamic
+   Computed dynamic gas cost based on memory expansion cost, word size, and topic count in the transaction. The implementation of dynamic gas calculation is in the helper module.
 
 ## Installation
 
