@@ -43,7 +43,7 @@ The Ethereum Virtual Machine (EVM) is the runtime environment for smart contract
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/yourusername/rust-evm.git
+    git clone https://github.com/itfat/rtevm.git
     cd rtevm
     ```
 
